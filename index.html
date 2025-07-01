@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>استمارة تسجيل الطلاب</title>
   <style>
     body {
@@ -35,16 +35,16 @@
 
   <form id="studentForm">
     <label>الاسم الكامل:</label>
-    <input type="text" name="name" required>
+    <input type="text" name="name" required />
 
     <label>الصف الدراسي:</label>
-    <input type="text" name="grade" required>
+    <input type="text" name="grade" required />
 
     <label>رقم الجوال (مع رمز الدولة):</label>
-    <input type="tel" name="phone" required>
+    <input type="tel" name="phone" required />
 
     <label>البريد الإلكتروني (اختياري):</label>
-    <input type="email" name="email">
+    <input type="email" name="email" />
 
     <button type="submit">تسجيل</button>
   </form>
@@ -61,32 +61,38 @@
         email: form.email.value
       };
 
-      // حفظ البيانات في Google Sheet
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzBkclSYM7R7d1XeSFtvlcQUwM6rX9diekJAFY8c3QLDM7yR1obK8CA2SnAQcs1pLLk/exec';
-      await fetch(scriptURL, {
-        method: 'POST',
-        body: new URLSearchParams(data)
-      });
+      try {
+        // إعدادات UltraMsg
+        const instanceId = "instance129389";
+        const token = "9grguvsi1pp4buyr";
 
-      // إرسال رسالة واتساب عبر UltraMsg
-      const instanceId = "instance129389";
-      const token = "9grguvsi1pp4buyr";
-      const messageBody = `مرحبًا ${data.name}، تم تسجيلك بنجاح في الصف: ${data.grade}. شكرًا لك!`;
+        const messageBody = `مرحبًا ${data.name}، تم تسجيلك بنجاح في الصف: ${data.grade}. شكرًا لك!`;
 
-      await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          to: data.phone,
-          body: messageBody
-        })
-      });
+        const response = await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            to: data.phone,
+            body: messageBody
+          })
+        });
 
-      alert("✅ تم التسجيل بنجاح! سيتم إرسال رسالة واتساب خلال ثوانٍ.");
-      form.reset();
+        if (!response.ok) {
+          throw new Error('فشل في إرسال رسالة الواتساب');
+        }
+
+        alert("✅ تم التسجيل بنجاح! سيتم إرسال رسالة واتساب خلال ثوانٍ.");
+        form.reset();
+
+      } catch (error) {
+        alert("❌ حدث خطأ: " + error.message);
+        console.error(error);
+      }
     });
   </script>
+
 </body>
 </html>
