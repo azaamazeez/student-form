@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>استمارة تسجيل الطلاب</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      background: #f5f5f5;
+      padding: 30px;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 style="text-align:center">📋 استمارة تسجيل الطلاب</h2>
+
+  <form id="studentForm">
+    <label>الاسم الكامل:</label>
+    <input type="text" name="name" required>
+
+    <label>الصف الدراسي:</label>
+    <input type="text" name="grade" required>
+
+    <label>رقم الجوال (مع رمز الدولة):</label>
+    <input type="tel" name="phone" required>
+
+    <label>البريد الإلكتروني (اختياري):</label>
+    <input type="email" name="email">
+
+    <button type="submit">تسجيل</button>
+  </form>
+
+  <script>
+    document.getElementById('studentForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        grade: form.grade.value,
+        phone: form.phone.value,
+        email: form.email.value
+      };
+
+      // حفظ البيانات في Google Sheet
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbzBkclSYM7R7d1XeSFtvlcQUwM6rX9diekJAFY8c3QLDM7yR1obK8CA2SnAQcs1pLLk/exec';
+      await fetch(scriptURL, {
+        method: 'POST',
+        body: new URLSearchParams(data)
+      });
+
+      // إرسال رسالة واتساب عبر UltraMsg
+      const instanceId = "instance129389";
+      const token = "9grguvsi1pp4buyr";
+      const messageBody = `مرحبًا ${data.name}، تم تسجيلك بنجاح في الصف: ${data.grade}. شكرًا لك!`;
+
+      await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          to: data.phone,
+          body: messageBody
+        })
+      });
+
+      alert("✅ تم التسجيل بنجاح! سيتم إرسال رسالة واتساب خلال ثوانٍ.");
+      form.reset();
+    });
+  </script>
+</body>
+</html>
