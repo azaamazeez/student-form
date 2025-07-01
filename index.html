@@ -62,17 +62,15 @@
       };
 
       try {
-        // إعدادات UltraMsg
         const instanceId = "instance129389";
         const token = "9grguvsi1pp4buyr";
 
         const messageBody = `مرحبًا ${data.name}، تم تسجيلك بنجاح في الصف: ${data.grade}. شكرًا لك!`;
 
-        const response = await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat`, {
+        const response = await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat?token=${token}`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             to: data.phone,
