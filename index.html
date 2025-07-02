@@ -1,171 +1,167 @@
 <!DOCTYPE html><html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <title>نموذج تسجيل طلاب</title>
+  <meta charset="UTF-8">
+  <title>استمارة التسجيل - زاد الرحيل</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       direction: rtl;
       background: #f9f9f9;
-      padding: 30px;
+      margin: 0;
+      padding: 0;
     }
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 20px;
-      max-width: 700px;
+    .container {
+      max-width: 800px;
       margin: auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      background: #fff;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      margin-top: 40px;
     }
     h2 {
+      color: #00796b;
       text-align: center;
-      color: #00695c;
+      margin-bottom: 20px;
     }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
+    p, label {
+      font-size: 16px;
+      margin: 10px 0 5px;
     }
-    input, select, button {
+    select, input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="date"], button {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 16px;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    .section {
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+    .age-group {
+      display: flex;
+      gap: 10px;
+    }
+    .age-group select {
+      flex: 1;
     }
     button {
-      background-color: #00695c;
+      background-color: #00796b;
       color: white;
+      border: none;
       cursor: pointer;
-      transition: 0.3s;
-      margin-top: 20px;
+      transition: background-color 0.3s;
     }
     button:hover {
       background-color: #004d40;
     }
-    .step {
-      display: none;
-    }
-    .step.active {
-      display: block;
-    }
-    .note {
-      background: #eefaf7;
-      padding: 10px 15px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #b2dfdb;
-    }
   </style>
 </head>
-<body><div class="card">
-  <div id="step1" class="step active">
-    <h2>📌 تنبيهات هامة حول الدورة</h2><div class="note">
-  <strong>أولاً: رسوم الدورة</strong><br>
-  الرسوم هي مقابل التمارين، المذاكرات، الاختبارات، الشهادات، والإدارة.
-</div>
-<div class="note">
-  <strong>ثانيًا: حيادية المشايخ</strong><br>
-  لا علاقة للمشايخ بالرسوم، وهم متطوعون.
-</div>
-<div class="note">
-  <strong>ثالثًا: الشهادة والجائزة</strong><br>
-  شهادة بـ 5 دولارات، والجائزة قرعة للفائزين بالعلامة التامة.
-</div>
-<div class="note">
-  <strong>رابعًا: دعم المشروع</strong><br>
-  يُطلب الدعم لتغطية نفقات الدورة واستمرارها.
-</div>
-
-<label>💰 كم ترغب في دفعه؟</label>
-<select id="paymentOption" required>
-  <option value="">اختر خيارك</option>
-  <option value="donation">أريد دفع رسوم الدورة (10 دولار) والتصدق بمبلغ إضافي دعمًا للدورة</option>
-  <option value="certificate10">أريد دفع (10 دولار) فقط للحصول على الشهادة</option>
-  <option value="certificate5">أريد دفع (5 دولار) فقط للحصول على الشهادة</option>
-  <option value="free">أريد الدراسة مجانًا، ولا أريد الشهادة</option>
+<body><div class="container">
+  <!-- Section 1: Notes -->
+  <div class="section active" id="notesSection">
+    <h2>📌 تنبيهات هامة حول الدورة</h2>
+    <p><strong>أولاً: رسوم الدورة</strong></p>
+    <p>الرسوم ليست مقابل الدروس، بل مقابل التمارين، المذاكرات، الاختبارات، الشهادات، وإدارة الدورة.</p>
+    <p><strong>ثانيًا: حيادية المشايخ</strong></p>
+    <p>المشايخ لا يتقاضون أي أجر، ويعملون تطوعًا.</p>
+    <p><strong>ثالثًا: الشهادة والجائزة المالية</strong></p>
+    <p>الشهادة تُمنح بعد اختبار نهائي بنسبة 50٪ فما فوق، برسوم 5$. الجائزة تُمنح عبر قرعة كل 6 أشهر.</p>
+    <p><strong>رابعًا: دعم استمرار المشروع</strong></p>
+    <p>الدورة متاحة مجانًا، لكن استمرارها يتطلب دعمًا رمزيًا (10$).</p><label>💰 كم ترغب في دفعه؟</label>
+<select id="paymentOption">
+  <option value="">اختر...</option>
+  <option value="10+">أريد دفع 10 دولار والتصدق بمبلغ إضافي</option>
+  <option value="10">أريد دفع 10 دولار فقط للحصول على الشهادة</option>
+  <option value="5">أريد دفع 5 دولار فقط للحصول على الشهادة</option>
+  <option value="0">أريد الدراسة مجانًا، ولا أريد الشهادة</option>
 </select>
 
-<button onclick="handleChoice()">التالي</button>
+<button onclick="nextStep()">التالي</button>
 
-  </div>  <div id="step2" class="step">
+  </div>  <!-- Section 2: Phone verification (optional) -->  <div class="section" id="verifySection">
     <h2>🔐 التحقق من رقم الجوال</h2>
     <label>رقم الجوال (مع رمز الدولة):</label>
     <input type="tel" id="verifyPhone" required />
-    <button onclick="sendCode()">📩 إرسال كود التحقق</button><div id="codeInput" style="display:none">
-  <label>أدخل كود التحقق:</label>
-  <input type="text" id="enteredCode" maxlength="6">
-  <button onclick="verifyCode()">✅ تحقق</button>
+    <button type="button" onclick="sendCode()">📩 إرسال كود التحقق</button>
+    <div id="codeArea" style="display:none">
+      <label>أدخل كود التحقق:</label>
+      <input type="text" id="enteredCode" maxlength="6" />
+      <button onclick="verifyCode()">✅ تحقق</button>
+    </div>
+  </div>  <!-- Section 3: Main form -->  <form class="section" id="formSection">
+    <h2>📋 استمارة التسجيل</h2><label>الاسم الأول:</label>
+<input type="text" name="firstName" required />
+
+<label>الكنية:</label>
+<input type="text" name="lastName" required />
+
+<label>الجنس:</label>
+<select name="gender" required>
+  <option value="">اختر الجنس</option>
+  <option value="ذكر">ذكر</option>
+  <option value="أنثى">أنثى</option>
+</select>
+
+<label>دولة الإقامة:</label>
+<input type="text" name="country" required />
+
+<label>تاريخ الميلاد:</label>
+<div class="age-group">
+  <select name="day" required><option>اليوم</option></select>
+  <select name="month" required><option>الشهر</option></select>
+  <select name="year" required><option>السنة</option></select>
 </div>
 
-  </div>  <div id="step3" class="step">
-    <h2>📋 نموذج تسجيل الطلاب</h2>
-    <form id="regForm">
-      <label>الاسم الأول:</label>
-      <input name="firstName" required /><label>الكنية:</label>
-  <input name="lastName" required />
+<label>الفئة الدراسية:</label>
+<select name="grade" required>
+  <option value="">اختر الفئة الدراسية</option>
+  <option>الصف الأول</option>
+  <option>الصف الثاني</option>
+  <option>الصف الثالث</option>
+  <option>الصف الرابع</option>
+  <option>الصف الخامس</option>
+  <option>الصف السادس</option>
+  <option>الصف السابع</option>
+  <option>الصف الثامن</option>
+  <option>الصف التاسع</option>
+  <option>الصف العاشر</option>
+  <option>الصف الحادي عشر</option>
+  <option>البكالوريا</option>
+  <option>الجامعة</option>
+</select>
 
-  <label>مكان السكن:</label>
-  <input name="location" required />
+<button type="submit">📨 تسجيل</button>
 
-  <label>الجنس:</label>
-  <select name="gender" required>
-    <option value="">اختر الجنس</option>
-    <option>ذكر</option>
-    <option>أنثى</option>
-  </select>
-
-  <label>دولة الإقامة:</label>
-  <input name="country" required />
-
-  <label>تاريخ الميلاد (يدوي):</label>
-  <div style="display:flex; gap:10px">
-    <input name="birthDay" type="number" min="1" max="31" placeholder="اليوم" required>
-    <input name="birthMonth" type="number" min="1" max="12" placeholder="الشهر" required>
-    <input name="birthYear" type="number" min="1900" max="2025" placeholder="السنة" required>
-  </div>
-
-  <label>الفئة الدراسية:</label>
-  <select name="grade" required>
-    <option value="">اختر الفئة</option>
-    <option>الصف الأول</option>
-    <option>الصف الثاني</option>
-    <option>الصف الثالث</option>
-    <option>الصف الرابع</option>
-    <option>الصف الخامس</option>
-    <option>الصف السادس</option>
-    <option>الصف السابع</option>
-    <option>الصف الثامن</option>
-    <option>الصف التاسع</option>
-    <option>الصف العاشر</option>
-    <option>الصف الحادي عشر</option>
-    <option>البكالوريا</option>
-    <option>الجامعة</option>
-  </select>
-
-  <button type="submit">📨 إرسال واتساب</button>
-</form>
-
-  </div>
+  </form>
 </div><script>
-  let correctCode = "";
-  let userPhone = "";
+  const daySelect = document.querySelector("select[name='day']");
+  const monthSelect = document.querySelector("select[name='month']");
+  const yearSelect = document.querySelector("select[name='year']");
 
-  function handleChoice() {
-    const choice = document.getElementById("paymentOption").value;
-    if (choice === "free") {
-      document.getElementById("step1").classList.remove("active");
-      document.getElementById("step3").classList.add("active");
+  for (let i = 1; i <= 31; i++) daySelect.innerHTML += `<option>${i}</option>`;
+  for (let i = 1; i <= 12; i++) monthSelect.innerHTML += `<option>${i}</option>`;
+  for (let i = new Date().getFullYear(); i >= 1950; i--) yearSelect.innerHTML += `<option>${i}</option>`;
+
+  let realCode = "";
+  function nextStep() {
+    const choice = document.getElementById('paymentOption').value;
+    if (choice === "0") {
+      document.getElementById('notesSection').classList.remove('active');
+      document.getElementById('formSection').classList.add('active');
     } else {
-      document.getElementById("step1").classList.remove("active");
-      document.getElementById("step2").classList.add("active");
+      document.getElementById('notesSection').classList.remove('active');
+      document.getElementById('verifySection').classList.add('active');
     }
   }
 
   function generateCode(phone) {
     const last6 = phone.slice(-6);
-    let code = "";
+    let code = '';
     for (let digit of last6) {
       let n = parseInt(digit);
       code += (n === 0 ? 0 : n - 1);
@@ -174,53 +170,27 @@
   }
 
   async function sendCode() {
-    const phone = document.getElementById("verifyPhone").value.trim();
-    if (!phone.startsWith('+') || phone.length < 10) return alert("📱 رقم غير صحيح");
-
-    correctCode = generateCode(phone);
-    userPhone = phone;
-
-    const message = `🔐 رمز التحقق الخاص بك: ${correctCode}`;
+    const phone = document.getElementById('verifyPhone').value.trim();
+    realCode = generateCode(phone);
     const instanceId = "instance129389";
     const token = "9grguvsi1pp4buyr";
-
     await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat?token=${token}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to: phone, body: message })
+      body: JSON.stringify({ to: phone, body: `رمز التحقق الخاص بك هو: ${realCode}` })
     });
-
-    document.getElementById("codeInput").style.display = "block";
     alert("✅ تم إرسال كود التحقق عبر واتساب");
+    document.getElementById("codeArea").style.display = "block";
   }
 
   function verifyCode() {
-    const entered = document.getElementById("enteredCode").value.trim();
-    if (entered === correctCode) {
-      document.getElementById("step2").classList.remove("active");
-      document.getElementById("step3").classList.add("active");
+    const userCode = document.getElementById('enteredCode').value.trim();
+    if (userCode === realCode) {
+      document.getElementById('verifySection').classList.remove('active');
+      document.getElementById('formSection').classList.add('active');
     } else {
       alert("❌ الكود غير صحيح");
     }
   }
-
-  document.getElementById("regForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const f = e.target;
-    const msg = `✅ تم تسجيلك:
-👤 ${f.firstName.value} ${f.lastName.value}
-📍 ${f.location.value} - ${f.country.value}
-🎓 ${f.grade.value}
-📅 الميلاد: ${f.birthDay.value}/${f.birthMonth.value}/${f.birthYear.value}`;
-
-    await fetch(`https://api.ultramsg.com/instance129389/messages/chat?token=9grguvsi1pp4buyr`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to: userPhone || document.getElementById("verifyPhone").value.trim(), body: msg })
-    });
-
-    alert("🎉 تم إرسال رسالة واتساب بالتسجيل!");
-    f.reset();
-  });
 </script></body>
 </html>
