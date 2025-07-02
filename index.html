@@ -105,6 +105,9 @@
   <option>الجامعة</option>
 </select>
 
+<label>رقم الجوال (مع رمز الدولة):</label>
+<input type="tel" name="phone" required />
+
 <button type="button" onclick="showNotes()">التالي</button>
 
   </form>  <!-- Section 2: Notes -->  <div class="section" id="notesSection">
@@ -129,8 +132,6 @@
 
   </div>  <!-- Section 3: Phone verification -->  <div class="section" id="verifySection">
     <h2>🔐 التحقق من رقم الجوال</h2>
-    <label>رقم الجوال (مع رمز الدولة):</label>
-    <input type="tel" id="verifyPhone" required />
     <button type="button" onclick="sendCode()">📩 إرسال كود التحقق</button>
     <div id="codeArea" style="display:none">
       <label>أدخل كود التحقق:</label>
@@ -152,10 +153,40 @@
     document.getElementById('notesSection').classList.add('active');
   }
 
+  function getFormData() {
+    const form = document.getElementById('formSection');
+    return {
+      firstName: form.firstName.value,
+      lastName: form.lastName.value,
+      gender: form.gender.value,
+      country: form.country.value,
+      grade: form.grade.value,
+      day: form.day.value,
+      month: form.month.value,
+      year: form.year.value,
+      phone: form.phone.value.trim()
+    };
+  }
+
+  async function sendWhatsAppConfirmation(data) {
+    const instanceId = "instance129389";
+    const token = "9grguvsi1pp4buyr";
+    const message = `مرحبًا ${data.firstName} ${data.lastName}،\nتم تسجيلك بنجاح في دورة زاد الرحيل ضمن: ${data.grade}\nشكراً لك ونتمنى لك التوفيق.`;
+
+    await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat?token=${token}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: data.phone, body: message })
+    });
+  }
+
   function handlePaymentOption() {
     const choice = document.getElementById('paymentOption').value;
+    const data = getFormData();
+
     if (choice === "0") {
-      alert("✅ تم التسجيل بنجاح بدون تحقق.");
+      sendWhatsAppConfirmation(data);
+      alert("✅ تم التسجيل بنجاح! سيتم إرسال رسالة تأكيد عبر واتساب.");
     } else {
       document.getElementById('notesSection').classList.remove('active');
       document.getElementById('verifySection').classList.add('active');
@@ -173,14 +204,14 @@
   }
 
   async function sendCode() {
-    const phone = document.getElementById('verifyPhone').value.trim();
-    const realCode = generateCode(phone);
+    const data = getFormData();
+    const realCode = generateCode(data.phone);
     const instanceId = "instance129389";
     const token = "9grguvsi1pp4buyr";
     await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat?token=${token}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to: phone, body: `رمز التحقق الخاص بك هو: ${realCode}` })
+      body: JSON.stringify({ to: data.phone, body: `رمز التحقق الخاص بك هو: ${realCode}` })
     });
     alert("✅ تم إرسال كود التحقق عبر واتساب");
     document.getElementById("codeArea").style.display = "block";
@@ -188,10 +219,11 @@
 
   function verifyCode() {
     const userCode = document.getElementById('enteredCode').value.trim();
-    const phone = document.getElementById('verifyPhone').value.trim();
-    const realCode = generateCode(phone);
+    const data = getFormData();
+    const realCode = generateCode(data.phone);
     if (userCode === realCode) {
-      alert("🎉 تم التسجيل والتحقق بنجاح!");
+      sendWhatsAppConfirmation(data);
+      alert("🎉 تم التسجيل والتحقق بنجاح! تم إرسال رسالة تأكيد عبر واتساب.");
     } else {
       alert("❌ الكود غير صحيح");
     }
