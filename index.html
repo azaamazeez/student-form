@@ -62,38 +62,8 @@
   </style>
 </head>
 <body><div class="container">
-  <!-- Section 1: Notes -->
-  <div class="section active" id="notesSection">
-    <h2>📌 تنبيهات هامة حول الدورة</h2>
-    <p><strong>أولاً: رسوم الدورة</strong></p>
-    <p>الرسوم ليست مقابل الدروس، بل مقابل التمارين، المذاكرات، الاختبارات، الشهادات، وإدارة الدورة.</p>
-    <p><strong>ثانيًا: حيادية المشايخ</strong></p>
-    <p>المشايخ لا يتقاضون أي أجر، ويعملون تطوعًا.</p>
-    <p><strong>ثالثًا: الشهادة والجائزة المالية</strong></p>
-    <p>الشهادة تُمنح بعد اختبار نهائي بنسبة 50٪ فما فوق، برسوم 5$. الجائزة تُمنح عبر قرعة كل 6 أشهر.</p>
-    <p><strong>رابعًا: دعم استمرار المشروع</strong></p>
-    <p>الدورة متاحة مجانًا، لكن استمرارها يتطلب دعمًا رمزيًا (10$).</p><label>💰 كم ترغب في دفعه؟</label>
-<select id="paymentOption">
-  <option value="">اختر...</option>
-  <option value="10+">أريد دفع 10 دولار والتصدق بمبلغ إضافي</option>
-  <option value="10">أريد دفع 10 دولار فقط للحصول على الشهادة</option>
-  <option value="5">أريد دفع 5 دولار فقط للحصول على الشهادة</option>
-  <option value="0">أريد الدراسة مجانًا، ولا أريد الشهادة</option>
-</select>
-
-<button onclick="nextStep()">التالي</button>
-
-  </div>  <!-- Section 2: Phone verification (optional) -->  <div class="section" id="verifySection">
-    <h2>🔐 التحقق من رقم الجوال</h2>
-    <label>رقم الجوال (مع رمز الدولة):</label>
-    <input type="tel" id="verifyPhone" required />
-    <button type="button" onclick="sendCode()">📩 إرسال كود التحقق</button>
-    <div id="codeArea" style="display:none">
-      <label>أدخل كود التحقق:</label>
-      <input type="text" id="enteredCode" maxlength="6" />
-      <button onclick="verifyCode()">✅ تحقق</button>
-    </div>
-  </div>  <!-- Section 3: Main form -->  <form class="section" id="formSection">
+  <!-- Section 1: Main form -->
+  <form class="section active" id="formSection">
     <h2>📋 استمارة التسجيل</h2><label>الاسم الأول:</label>
 <input type="text" name="firstName" required />
 
@@ -135,9 +105,39 @@
   <option>الجامعة</option>
 </select>
 
-<button type="submit">📨 تسجيل</button>
+<button type="button" onclick="showNotes()">التالي</button>
 
-  </form>
+  </form>  <!-- Section 2: Notes -->  <div class="section" id="notesSection">
+    <h2>📌 تنبيهات هامة حول الدورة</h2>
+    <p><strong>أولاً: رسوم الدورة</strong></p>
+    <p>الرسوم ليست مقابل الدروس، بل مقابل التمارين، المذاكرات، الاختبارات، الشهادات، وإدارة الدورة.</p>
+    <p><strong>ثانيًا: حيادية المشايخ</strong></p>
+    <p>المشايخ لا يتقاضون أي أجر، ويعملون تطوعًا.</p>
+    <p><strong>ثالثًا: الشهادة والجائزة المالية</strong></p>
+    <p>الشهادة تُمنح بعد اختبار نهائي بنسبة 50٪ فما فوق، برسوم 5$. الجائزة تُمنح عبر قرعة كل 6 أشهر.</p>
+    <p><strong>رابعًا: دعم استمرار المشروع</strong></p>
+    <p>الدورة متاحة مجانًا، لكن استمرارها يتطلب دعمًا رمزيًا (10$).</p><label>💰 كم ترغب في دفعه؟</label>
+<select id="paymentOption">
+  <option value="">اختر...</option>
+  <option value="10+">أريد دفع 10 دولار والتصدق بمبلغ إضافي</option>
+  <option value="10">أريد دفع 10 دولار فقط للحصول على الشهادة</option>
+  <option value="5">أريد دفع 5 دولار فقط للحصول على الشهادة</option>
+  <option value="0">أريد الدراسة مجانًا، ولا أريد الشهادة</option>
+</select>
+
+<button onclick="handlePaymentOption()">متابعة</button>
+
+  </div>  <!-- Section 3: Phone verification -->  <div class="section" id="verifySection">
+    <h2>🔐 التحقق من رقم الجوال</h2>
+    <label>رقم الجوال (مع رمز الدولة):</label>
+    <input type="tel" id="verifyPhone" required />
+    <button type="button" onclick="sendCode()">📩 إرسال كود التحقق</button>
+    <div id="codeArea" style="display:none">
+      <label>أدخل كود التحقق:</label>
+      <input type="text" id="enteredCode" maxlength="6" />
+      <button onclick="verifyCode()">✅ تحقق</button>
+    </div>
+  </div>
 </div><script>
   const daySelect = document.querySelector("select[name='day']");
   const monthSelect = document.querySelector("select[name='month']");
@@ -147,12 +147,15 @@
   for (let i = 1; i <= 12; i++) monthSelect.innerHTML += `<option>${i}</option>`;
   for (let i = new Date().getFullYear(); i >= 1950; i--) yearSelect.innerHTML += `<option>${i}</option>`;
 
-  let realCode = "";
-  function nextStep() {
+  function showNotes() {
+    document.getElementById('formSection').classList.remove('active');
+    document.getElementById('notesSection').classList.add('active');
+  }
+
+  function handlePaymentOption() {
     const choice = document.getElementById('paymentOption').value;
     if (choice === "0") {
-      document.getElementById('notesSection').classList.remove('active');
-      document.getElementById('formSection').classList.add('active');
+      alert("✅ تم التسجيل بنجاح بدون تحقق.");
     } else {
       document.getElementById('notesSection').classList.remove('active');
       document.getElementById('verifySection').classList.add('active');
@@ -171,7 +174,7 @@
 
   async function sendCode() {
     const phone = document.getElementById('verifyPhone').value.trim();
-    realCode = generateCode(phone);
+    const realCode = generateCode(phone);
     const instanceId = "instance129389";
     const token = "9grguvsi1pp4buyr";
     await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat?token=${token}`, {
@@ -185,9 +188,10 @@
 
   function verifyCode() {
     const userCode = document.getElementById('enteredCode').value.trim();
+    const phone = document.getElementById('verifyPhone').value.trim();
+    const realCode = generateCode(phone);
     if (userCode === realCode) {
-      document.getElementById('verifySection').classList.remove('active');
-      document.getElementById('formSection').classList.add('active');
+      alert("🎉 تم التسجيل والتحقق بنجاح!");
     } else {
       alert("❌ الكود غير صحيح");
     }
