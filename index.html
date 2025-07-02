@@ -2,33 +2,31 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>نموذج تسجيل الطلاب</title>
+  <title>نموذج التحقق والتسجيل</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
       direction: rtl;
-      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
-      margin: 0;
+      background: linear-gradient(to bottom, #e3f2fd, #ffffff);
       padding: 40px;
     }
     form {
       background: white;
-      padding: 30px;
+      padding: 25px;
       border-radius: 20px;
       max-width: 600px;
       margin: auto;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
     h2 {
       text-align: center;
-      color: #00796b;
-      margin-bottom: 30px;
+      color: #0d47a1;
+      margin-bottom: 20px;
     }
     label {
       display: block;
       margin-top: 15px;
       font-weight: bold;
-      color: #333;
     }
     input, select, button {
       width: 100%;
@@ -39,21 +37,39 @@
       font-size: 16px;
     }
     button {
-      background-color: #00796b;
+      background-color: #0d47a1;
       color: white;
-      border: none;
       cursor: pointer;
-      transition: 0.3s ease;
-      margin-top: 25px;
+      transition: 0.3s;
     }
     button:hover {
-      background-color: #004d40;
+      background-color: #08306b;
+    }
+    #registrationForm {
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <form id="studentForm">
+  <!-- ✅ الخطوة 1: التحقق -->
+  <form id="verificationForm">
+    <h2>🔐 التحقق من رقم الجوال</h2>
+
+    <label>رقم الجوال (مع رمز الدولة):</label>
+    <input type="tel" name="phone" id="verifyPhone" required />
+
+    <button type="button" onclick="sendVerificationCode()">📩 إرسال كود التحقق</button>
+
+    <div id="codeSection" style="display:none;">
+      <label>أدخل كود التحقق:</label>
+      <input type="text" id="enteredCode" maxlength="6" />
+      <button type="button" onclick="verifyCode()">✅ تحقق</button>
+    </div>
+  </form>
+
+  <!-- ✅ الخطوة 2: نموذج التسجيل -->
+  <form id="registrationForm">
     <h2>📋 نموذج تسجيل الطلاب</h2>
 
     <label>الاسم الأول:</label>
@@ -86,16 +102,78 @@
       <option>الجامعة</option>
     </select>
 
-    <label>رقم الجوال (مع رمز الدولة):</label>
-    <input type="tel" name="phone" required />
-
     <button type="submit">📨 تسجيل وإرسال واتساب</button>
   </form>
 
   <script>
-    document.getElementById('studentForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
+    let correctCode = '';
+    let verifiedPhone = '';
 
+    // توليد كود من الرقم
+    function generateCode(phone) {
+      const last6 = phone.slice(-6);
+      let code = '';
+      for (let digit of last6) {
+        let n = parseInt(digit);
+        code += (n === 0 ? 0 : n - 1);
+      }
+      return code;
+    }
+
+    // إرسال كود التحقق
+    async function sendVerificationCode() {
+      const phone = document.getElementById('verifyPhone').value.trim();
+      if (!phone.startsWith('+') || phone.length < 8) {
+        alert('📱 الرجاء إدخال رقم صحيح يبدأ بـ +');
+        return;
+      }
+
+      correctCode = generateCode(phone);
+      verifiedPhone = phone;
+
+      const instanceId = "instance129389";
+      const token = "9grguvsi1pp4buyr";
+      const message = `🔐 رمز التحقق الخاص بك هو: ${correctCode}`;
+
+      const response = await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat?token=${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: phone,
+          body: message
+        })
+      });
+
+      if (!response.ok) {
+        alert("❌ فشل في إرسال الكود. تأكد من الرقم.");
+        return;
+      }
+
+      alert("✅ تم إرسال الكود عبر واتساب. يرجى إدخاله بالأسفل.");
+      document.getElementById('codeSection').style.display = 'block';
+    }
+
+    // التحقق من الكود
+    function verifyCode() {
+      const entered = document.getElementById('enteredCode').value.trim();
+      if (entered === correctCode) {
+        alert('✅ تم التحقق بنجاح. تابع التسجيل.');
+        document.getElementById('verificationForm').style.display = 'none';
+        document.getElementById('registrationForm').style.display = 'block';
+        document.querySelector('#registrationForm input[name="phone"]').value = verifiedPhone;
+        const hiddenPhone = document.createElement('input');
+        hiddenPhone.type = 'hidden';
+        hiddenPhone.name = 'phone';
+        hiddenPhone.value = verifiedPhone;
+        document.getElementById('registrationForm').appendChild(hiddenPhone);
+      } else {
+        alert('❌ كود غير صحيح. تأكد من الكود الذي وصلك.');
+      }
+    }
+
+    // إرسال رسالة التسجيل بعد النموذج
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
       const form = e.target;
       const data = {
         firstName: form.firstName.value.trim(),
@@ -103,42 +181,35 @@
         location: form.location.value.trim(),
         birthDate: form.birthDate.value,
         grade: form.grade.value,
-        phone: form.phone.value.trim()
+        phone: verifiedPhone
       };
 
-      try {
-        const instanceId = "instance129389";
-        const token = "9grguvsi1pp4buyr";
+      const messageBody =
+        `✅ تم تسجيلك بنجاح!\n` +
+        `👤 الاسم: ${data.firstName} ${data.lastName}\n` +
+        `📍 السكن: ${data.location}\n` +
+        `📅 تاريخ الميلاد: ${data.birthDate}\n` +
+        `🎓 الفئة الدراسية: ${data.grade}`;
 
-        const messageBody =
-          `مرحبًا ${data.firstName} ${data.lastName} 👋\n` +
-          `📍 السكن: ${data.location}\n` +
-          `🎓 الفئة الدراسية: ${data.grade}\n` +
-          `📅 تاريخ الميلاد: ${data.birthDate}\n\n` +
-          `✅ تم تسجيلك بنجاح. شكراً لتواصلك معنا!`;
+      const instanceId = "instance129389";
+      const token = "9grguvsi1pp4buyr";
 
-        const response = await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat?token=${token}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            to: data.phone,
-            body: messageBody
-          })
-        });
+      const response = await fetch(`https://api.ultramsg.com/${instanceId}/messages/chat?token=${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: data.phone,
+          body: messageBody
+        })
+      });
 
-        if (!response.ok) {
-          throw new Error('فشل في إرسال رسالة الواتساب');
-        }
-
-        alert("✅ تم التسجيل وسيتم إرسال رسالة واتساب خلال لحظات.");
-        form.reset();
-
-      } catch (error) {
-        alert("❌ خطأ: " + error.message);
-        console.error(error);
+      if (!response.ok) {
+        alert("❌ فشل في إرسال رسالة التأكيد.");
+        return;
       }
+
+      alert("🎉 تم تسجيلك وإرسال تأكيد عبر واتساب.");
+      form.reset();
     });
   </script>
 
