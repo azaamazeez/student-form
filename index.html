@@ -1,141 +1,139 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>استمارة التسجيل - زاد الرحيل</title>
+  <title>📋 استمارة التسجيل</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; direction: rtl; background: #f9f9f9; padding: 0; margin: 0; }
-    .container { max-width: 800px; margin: 40px auto; background: #fff; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 15px; }
-    h2 { color: #00796b; text-align: center; margin-bottom: 20px; }
-    p, label { font-size: 16px; margin: 10px 0 5px; }
-    select, input, button { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; }
-    input[type="radio"] { margin-left: 10px; }
-    .section { display: none; }
-    .active { display: block; }
+    body { font-family: 'Segoe UI', sans-serif; direction: rtl; background: #f9f9f9; padding: 20px; }
+    .container { max-width: 700px; margin: auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #00796b; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, select, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 15px; }
     .age-group { display: flex; gap: 10px; }
     .age-group input { flex: 1; }
-    button { background: #00796b; color: #fff; cursor: pointer; transition: .3s; }
-    button:hover { background: #004d40; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .notes { background: #f1f1f1; padding: 15px; border-radius: 8px; margin-top: 15px; }
   </style>
 </head>
 <body>
-<div class="container">
-
-  <!-- ● Step 1: Main form -->
-  <form class="section active" id="formSection">
+<div class="container">  <div class="section active" id="formSection">
     <h2>📋 استمارة التسجيل</h2>
     <label>الاسم الأول:</label><input type="text" name="firstName" required />
     <label>الكنية:</label><input type="text" name="lastName" required />
-    <label>الجنس:</label><select name="gender" required>
-      <option value="">اختر الجنس</option><option>ذكر</option><option>أنثى</option>
+    <label>الجنس:</label>
+    <select name="gender" required>
+      <option value="">اختر الجنس</option><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option>
     </select>
     <label>دولة الإقامة:</label><input type="text" name="country" required />
-    <label>تاريخ الميلاد (اليوم-الشهر-السنة):</label>
+    <label>تاريخ الميلاد:</label>
     <div class="age-group">
       <input type="number" name="ageDay" placeholder="اليوم" min="1" max="31" required />
       <input type="number" name="ageMonth" placeholder="الشهر" min="1" max="12" required />
       <input type="number" name="ageYear" placeholder="السنة" min="1950" max="2025" required />
     </div>
     <label>الفئة الدراسية:</label>
-    <select name="grade" required><option value="">اختر</option>
-      <option>الصف الأول</option><option>الثاني</option><option>الثالث</option><option>الرابع</option>
-      <option>الخامس</option><option>السادس</option><option>السابع</option><option>الثامن</option>
-      <option>التاسع</option><option>العاشر</option><option>الحادي عشر</option><option>البكالوريا</option><option>الجامعة</option>
+    <select name="grade" required>
+      <option value="">اختر الفئة الدراسية</option>
+      <option>الصف الأول</option><option>الصف الثاني</option><option>الصف الثالث</option>
+      <option>الصف الرابع</option><option>الصف الخامس</option><option>الصف السادس</option>
+      <option>الصف السابع</option><option>الصف الثامن</option><option>الصف التاسع</option>
+      <option>الصف العاشر</option><option>الصف الحادي عشر</option><option>البكالوريا</option><option>الجامعة</option>
     </select>
     <label>رقم الجوال (مع رمز الدولة):</label><input type="tel" name="phone" required />
-    <button type="button" onclick="showNotes()">التالي</button>
-  </form>
-
-  <!-- ● Step 2: Notes & Payment -->
-  <div class="section" id="notesSection">
+    <button type="button" onclick="goToNotes()">التالي</button>
+  </div>  <div class="section" id="notesSection">
     <h2>📌 تنبيهات هامة حول الدورة</h2>
-    <p><strong>أولاً – رسوم الدورة:</strong><br>
-      ... (النص الكامل كما تريد) ...
-    </p>
-    <p><strong>ثانيًا – حيادية المشايخ:</strong> ...</p>
-    <p><strong>ثالثًا – الشهادة والجوائز:</strong> ...</p>
-    <p><strong>رابعًا – دعم المشروع:</strong> ...</p>
+    <div class="notes">
+      <p><strong>أولاً: رسوم الدورة</strong><br>
+        هذه الرسوم ليست مقابل الدروس، فالدروس متوفرة على قنوات المشايخ الرسمية في اليوتيوب.<br>
+        وإنما مقابل: التمارين اليومية، المذاكرات، الاختبارات، الشهادات، الإدارة.
+        <br>✅ تُعد صدقة لدعم المشروع.
+      </p>
+      <p><strong>ثانيًا: حيادية المشايخ</strong><br>
+        المشايخ لا علاقة لهم بأي رسوم ولا يتقاضون شيئًا.
+      </p>
+      <p><strong>ثالثًا: الشهادة والجائزة المالية</strong><br>
+        📄 الشهادة برسوم 5$. يُمكن الدراسة مجانًا بدون شهادة.<br>
+        🎁 تُقام قرعة بجوائز 200$ كل 6 أشهر للفائزين.
+      </p>
+      <p><strong>رابعًا: دعم استمرار المشروع</strong><br>
+        المشروع يحتاج دعم لتغطية الإشراف والدعم الفني.<br>
+        مؤسسة زاد الرحيل لا تملك مصدر دخل.
+      </p>
+    </div>
     <p><strong>💰 كم ترغب في دفعه؟</strong></p>
-    <label><input type="radio" name="paymentChoice" value="10+"> أريد دفع 10$ + تبرع إضافي</label><br>
-    <label><input type="radio" name="paymentChoice" value="10"> أريد دفع 10$ فقط للشهادة</label><br>
-    <label><input type="radio" name="paymentChoice" value="5"> أريد دفع 5$ فقط للشهادة</label><br>
-    <label><input type="radio" name="paymentChoice" value="0"> أريد الدراسة مجانًا، ولا أريد الشهادة</label><br>
+    <label><input type="radio" name="paymentChoice" value="10+"> أريد دفع رسوم الدورة (10 دولار) والتصدق بمبلغ إضافي.</label>
+    <label><input type="radio" name="paymentChoice" value="10"> أريد دفع (10 دولار) فقط للحصول على الشهادة.</label>
+    <label><input type="radio" name="paymentChoice" value="5"> أريد دفع (5 دولار) فقط للحصول على الشهادة.</label>
+    <label><input type="radio" name="paymentChoice" value="0"> أريد الدراسة مجانًا، ولا أريد الشهادة.</label>
     <button onclick="handlePaymentChoice()">لقد فهمت، شكرًا</button>
-  </div>
-
-  <!-- ● Step 3: Phone Verification -->
-  <div class="section" id="verifySection">
-    <h2>🔐 رمز التحقق</h2>
-    <button type="button" onclick="sendCode()">📩 إرسال كود التحقق</button>
+  </div>  <div class="section" id="verifySection">
+    <h2>🔐 التحقق من رقم الجوال</h2>
+    <button onclick="sendCode()">📩 إرسال كود التحقق</button>
     <div id="codeArea" style="display:none">
-      <label>أدخل كود التحقق:</label><input type="text" id="enteredCode" maxlength="6" />
+      <label>أدخل كود التحقق:</label>
+      <input type="text" id="enteredCode" maxlength="6">
       <button onclick="verifyCode()">✅ تحقق</button>
     </div>
   </div>
+</div><script>
+  let userData = {}, correctCode = '';
 
-</div>
-
-<script>
-  let userData = {};
-  let correctCode = '';
-
-  function showNotes() {
-    const form = document.getElementById('formSection');
-    if (!form.checkValidity()) return form.reportValidity();
-    userData = Object.fromEntries(new FormData(form));
-    switchTo('notesSection');
+  function goToNotes() {
+    const inputs = document.querySelectorAll('#formSection input, #formSection select');
+    for (const i of inputs) if (!i.checkValidity()) return i.reportValidity();
+    inputs.forEach(input => userData[input.name] = input.value);
+    showSection('notesSection');
   }
 
-  function switchTo(id) {
-    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
   }
 
   function generateCode(phone) {
-    const last6 = phone.slice(-6), codeArr = [...last6].map(d => +d === 0 ? '0' : (+d -1));
-    return codeArr.join('');
+    const last6 = phone.slice(-6);
+    return [...last6].map(d => d == '0' ? '0' : (parseInt(d)-1)).join('');
   }
 
-  async function sendWhatsApp(phone, message) {
+  function sendWhatsApp(phone, message) {
     const inst = "instance129389", tok = "9grguvsi1pp4buyr";
-    await fetch(`https://api.ultramsg.com/${inst}/messages/chat?token=${tok}`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({to: phone, body: message})
+    return fetch(`https://api.ultramsg.com/${inst}/messages/chat?token=${tok}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: phone, body: message })
     });
   }
 
   function handlePaymentChoice() {
     const sel = document.querySelector('input[name="paymentChoice"]:checked');
-    if (!sel) return alert("اختر أحد الخيارات");
+    if (!sel) return alert("يرجى اختيار أحد الخيارات");
     userData.payment = sel.value;
-
     if (sel.value === '0') {
-      sendWhatsApp(userData.phone,
-        `مرحبًا ${userData.firstName} ${userData.lastName}،\nتم تسجيلك مجانًا في دورة زاد الرحيل ضمن: ${userData.grade}\nشكراً لك ونتمنى لك التوفيق.`);
-      alert("✅ تم التسجيل مجانًا. تم إرسال رسالة تأكيد.");
-      return;
+      const msg = `مرحبًا ${userData.firstName} ${userData.lastName}\nتم تسجيلك مجانًا ضمن دورة ${userData.grade}.\nبالتوفيق.`;
+      sendWhatsApp(userData.phone, msg).then(() => alert("✅ تم الإرسال بنجاح"));
+    } else {
+      correctCode = generateCode(userData.phone);
+      showSection('verifySection');
     }
-
-    correctCode = generateCode(userData.phone);
-    switchTo('verifySection');
   }
 
   function sendCode() {
     correctCode = generateCode(userData.phone);
-    sendWhatsApp(userData.phone, `🔐 كود التحقق هو: ${correctCode}`);
-    document.getElementById('codeArea').style.display = 'block';
-    alert("✅ تم إرسال كود التحقق عبر واتساب.");
+    sendWhatsApp(userData.phone, `رمز التحقق الخاص بك هو: ${correctCode}`).then(() => {
+      alert("📩 تم إرسال الكود عبر واتساب");
+      document.getElementById('codeArea').style.display = 'block';
+    });
   }
 
   function verifyCode() {
-    if (document.getElementById('enteredCode').value.trim() !== correctCode)
-      return alert("❌ الكود غير صحيح");
-
-    sendWhatsApp(userData.phone,
-      `✅ مرحبًا ${userData.firstName} ${userData.lastName}،\nتم تسجيلك بنجاح في دورة زاد الرحيل ضمن: ${userData.grade}\nشكراً لك ونتمنى لك التوفيق.`);
-    alert("🎉 تم التحقق. تم إرسال رسالة تأكيد عبر واتساب.");
+    const entered = document.getElementById('enteredCode').value.trim();
+    if (entered === correctCode) {
+      const msg = `✅ تم التحقق بنجاح\n${userData.firstName} ${userData.lastName} - ${userData.grade}`;
+      sendWhatsApp(userData.phone, msg).then(() => alert("🎉 تم التسجيل بنجاح!"));
+    } else {
+      alert("❌ الكود غير صحيح");
+    }
   }
-</script>
-</body>
+</script></body>
 </html>
