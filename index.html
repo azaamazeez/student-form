@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="ar">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -147,7 +148,9 @@
       <input type="tel" id="phone" placeholder="رقم الهاتف" required />
     </div>
     <button type="button" onclick="goToNotes()">التالي</button>
-  </div>  <div class="section" id="step2">
+  </div>
+
+  <div class="section" id="step2">
     <h2>📌 تنبيهات هامة حول الدورة</h2>
     <div class="note active">
       <p><strong>أولاً: رسوم الدورة</strong><br>هذه الرسوم ليست مقابل الدروس، وإنما مقابل: التمارين اليومية، المذاكرات، الاختبارات، الشهادات، الإدارة.<br>✅ تُعد صدقة لدعم المشروع.</p>
@@ -170,7 +173,9 @@
       <input type="hidden" id="paymentInput" required>
     </div>
     <button onclick="nextNote()">التالي</button>
-  </div>  <div class="section" id="step3">
+  </div>
+
+  <div class="section" id="step3">
     <h2>🔐 الرقم الأكاديمي</h2>
     <p>📩 تم إرسال الرقم الأكاديمي الخاص بك إلى واتساب.</p>
     <label>يرجى إدخال الرقم الأكاديمي الخاص بك:</label>
@@ -183,7 +188,9 @@
       <input maxlength="1" type="text" inputmode="numeric">
     </div>
     <button onclick="verifyCode()">✅ تحقق</button>
-  </div>  <div class="section" id="success">
+  </div>
+
+  <div class="section" id="success">
     <h2>✅ تم التسجيل بنجاح!</h2>
     <p>شكرًا لك، تم إرسال رسالة عبر واتساب.</p>
   </div>
@@ -196,19 +203,69 @@
       el.classList.add('selected');
       document.getElementById('genderInput').value = el.dataset.value;
     });
-  });function goToNotes() { document.getElementById("step1").classList.remove("active"); document.getElementById("step2").classList.add("active"); }
+  });
 
-function nextNote() { const payment = document.getElementById("paymentInput").value; if (!payment) return alert("يرجى اختيار طريقة الدفع."); document.getElementById("step2").classList.remove("active"); if (payment === "0") { document.getElementById("success").classList.add("active"); } else { document.getElementById("step3").classList.add("active"); sendVerificationCode(); } }
+  function goToNotes() {
+    document.getElementById("step1").classList.remove("active");
+    document.getElementById("step2").classList.add("active");
+  }
 
-function selectPayment(el, value) { document.querySelectorAll(".payment-option").forEach(opt => opt.classList.remove("selected")); el.classList.add("selected"); document.getElementById("paymentInput").value = value; }
+  function nextNote() {
+    const payment = document.getElementById("paymentInput").value;
+    if (!payment) return alert("يرجى اختيار طريقة الدفع.");
+    document.getElementById("step2").classList.remove("active");
+    if (payment === "0") {
+      document.getElementById("success").classList.add("active");
+    } else {
+      document.getElementById("step3").classList.add("active");
+      sendVerificationCode();
+    }
+  }
 
-function sendVerificationCode() { const phone = document.getElementById("countryCode").value + document.getElementById("phone").value; const last6 = phone.slice(-6); currentCode = last6.split('').map(n => (parseInt(n) - 1 + 10) % 10).join(''); const msg = 🔐 الرقم الأكاديمي الخاص بك هو: ${currentCode}; sendWhatsApp(phone, msg); alert("📩 تم إرسال الرقم الأكاديمي عبر واتساب."); }
+  function selectPayment(el, value) {
+    document.querySelectorAll(".payment-option").forEach(opt => opt.classList.remove("selected"));
+    el.classList.add("selected");
+    document.getElementById("paymentInput").value = value;
+  }
 
-function verifyCode() { const inputs = document.querySelectorAll(".code-inputs input"); const entered = Array.from(inputs).map(i => i.value).join(""); if (entered === currentCode) { document.getElementById("step3").classList.remove("active"); document.getElementById("success").classList.add("active"); } else { alert("❌ الرقم الأكاديمي غير صحيح."); } }
+  function sendVerificationCode() {
+    const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
+    const last6 = phone.slice(-6);
+    currentCode = last6.split('').map(n => (parseInt(n) - 1 + 10) % 10).join('');
+    const msg = `🔐 الرقم الأكاديمي الخاص بك هو: ${currentCode}`;
+    sendWhatsApp(phone, msg);
+    alert("📩 تم إرسال الرقم الأكاديمي عبر واتساب.");
+  }
 
-function moveToNext(input) { if (input.value.length === 1) { const next = input.nextElementSibling; if (next && next.tagName === "INPUT") { next.focus(); } } }
+  function verifyCode() {
+    const inputs = document.querySelectorAll(".code-inputs input");
+    const entered = Array.from(inputs).map(i => i.value).join("");
+    if (entered === currentCode) {
+      document.getElementById("step3").classList.remove("active");
+      document.getElementById("success").classList.add("active");
+    } else {
+      alert("❌ الرقم الأكاديمي غير صحيح.");
+    }
+  }
 
-async function sendWhatsApp(phone, message) { const inst = "instance129389"; const tok = "9grguvsi1pp4buyr"; await fetch(https://api.ultramsg.com/${inst}/messages/chat?token=${tok}, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ to: phone, body: message }) }); } </script>
+  function moveToNext(input) {
+    if (input.value.length === 1) {
+      const next = input.nextElementSibling;
+      if (next && next.tagName === "INPUT") {
+        next.focus();
+      }
+    }
+  }
 
+  async function sendWhatsApp(phone, message) {
+    const inst = "instance129389";
+    const tok = "9grguvsi1pp4buyr";
+    await fetch(`https://api.ultramsg.com/${inst}/messages/chat?token=${tok}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: phone, body: message })
+    });
+  }
+</script>
 </body>
 </html>
