@@ -1,69 +1,63 @@
-<!-- استمارة التسجيل -->
-الاسم الثلاثي:      
-<label>الجنس:</label> 
-<div class="gender-options">   
-  <div class="gender-option" onclick="selectGender(this, 'ذكر')">ذكر</div>   
-  <div class="gender-option" onclick="selectGender(this, 'أنثى')">أنثى</div> 
-</div> 
-<input type="hidden" id="genderInput" required>  
+## 📋 استمارة التسجيل  
+     الاسم الثلاثي:      
+     `<label>الجنس:</label> 
+     <div class="gender-options">   
+       <div class="gender-option" onclick="selectGender(this, 'ذكر')">ذكر</div>   
+       <div class="gender-option" onclick="selectGender(this, 'أنثى')">أنثى</div> 
+     </div> 
+     <input type="hidden" id="genderInput" required>  
+     <label>دولة الإقامة:</label> 
+     <input type="text" id="country" required>  
+     <label>العمر:</label> 
+     <input type="number" id="birthDate" placeholder="مثال: 25" min="5" max="100" required>  
+     <label>رقم الجوال:</label> 
+     <div class="phone-group">   
+       <select id="countryCode" required>     
+         <option value="">+ رمز الدولة</option>     
+         <option value="+966">🇸🇦 +966</option>     
+         <option value="+20">🇪🇬 +20</option>     
+         <option value="+963">🇸🇾 +963</option>     
+         <option value="+964">🇮🇶 +964</option>     
+         <option value="+971">🇦🇪 +971</option>     
+         <option value="+962">🇯🇴 +962</option>     
+         <option value="+965">🇰🇼 +965</option>     
+         <option value="+973">🇧🇭 +973</option>     
+         <option value="+968">🇴🇲 +968</option>     
+         <option value="+212">🇲🇦 +212</option>     
+         <!-- أضف المزيد لاحقًا -->   
+       </select>   
+       <input type="tel" id="phone" placeholder="رقم الهاتف" required /> 
+     </div> 
+     <button onclick="goToNotes()">التالي</button> `     
+     
+## 📌 تنبيهات هامة حول الدورة  
+       
+**أولاً: رسوم الدورة**ليست مقابل الدروس بل مقابل التمارين، المذاكرات، الدعم، الشهادة. وتُعد صدقة لدعم المشروع.  
+       
+**ثانيًا: حيادية المشايخ**المشايخ لا علاقة لهم بأي رسوم ولا يتقاضون شيئًا.  
+       
+**ثالثًا: الشهادة والجائزة**الشهادة برسوم 5$. قرعة بـ 200$ كل 6 أشهر للفائزين.  
+       
+**رابعًا: دعم المشروع**لضمان استمراريته من حيث الإشراف والتقني.  
+       
+**💰 كم ترغب في دفعه؟**  
+       
+10$ + تبرع  
+       
+10$ فقط  
+       
+5$ فقط  
+       
+مجانًا  
+       
+التالي     
+     
+## 🔐 الرقم الأكاديمي الخاص بك  
+       
+📩 تم إرسال الرقم الأكاديمي عبر واتساب  
+يرجى إدخال الرقم الأكاديمي:
 
-<label>دولة الإقامة:</label> 
-<input type="text" id="country" required>  
-
-<label>العمر:</label> 
-<input type="number" id="birthDate" placeholder="مثال: 25" min="5" max="100" required>  
-
-<label>رقم الجوال:</label> 
-<div class="phone-group">   
-  <select id="countryCode" required>     
-    <option value="">+ رمز الدولة</option>     
-    <option value="+966">🇸🇦 +966</option>     
-    <option value="+20">🇪🇬 +20</option>     
-    <option value="+963">🇸🇾 +963</option>     
-    <option value="+964">🇮🇶 +964</option>     
-    <option value="+971">🇦🇪 +971</option>     
-    <option value="+962">🇯🇴 +962</option>     
-    <option value="+965">🇰🇼 +965</option>     
-    <option value="+973">🇧🇭 +973</option>     
-    <option value="+968">🇴🇲 +968</option>     
-    <option value="+212">🇲🇦 +212</option>     
-    <!-- أضف المزيد لاحقًا -->   
-  </select>   
-  <input type="tel" id="phone" placeholder="رقم الهاتف" required /> 
-</div> 
-
-<button onclick="goToNotes()">التالي</button>
-
-<!-- تنبيهات هامة -->
-## 📌 تنبيهات هامة حول الدورة
-
-**أولاً: رسوم الدورة**ليست مقابل الدروس بل مقابل التمارين، المذاكرات، الدعم، الشهادة. وتُعد صدقة لدعم المشروع.
-
-**ثانيًا: حيادية المشايخ**المشايخ لا علاقة لهم بأي رسوم ولا يتقاضون شيئًا.
-
-**ثالثًا: الشهادة والجائزة**الشهادة برسوم 5$. قرعة بـ 200$ كل 6 أشهر للفائزين.
-
-**رابعًا: دعم المشروع**لضمان استمراريته من حيث الإشراف والتقني.
-
-**💰 كم ترغب في دفعه؟**
-
-10$ + تبرع
-
-10$ فقط
-
-5$ فقط
-
-مجانًا
-
-<button onclick="goToVerification()">التالي</button>
-
-<!-- قسم الرقم الأكاديمي الخاص بك -->
-
-## 🔐 الرقم الأكاديمي الخاص بك
-
-<p>📩 تم إرسال الرقم الأكاديمي عبر واتساب يرجى إدخال الرقم الأكاديمي:</p>
-
-<div id="academicCodeInput" style="display:flex; gap:8px; margin-bottom: 10px;">
+<div style="display:flex; gap:8px; margin:10px 0;">
   <input type="text" maxlength="1" class="code-box" oninput="moveNext(this)" onkeydown="movePrev(event, this)" style="width:35px; height:40px; font-size:20px; text-align:center;" />
   <input type="text" maxlength="1" class="code-box" oninput="moveNext(this)" onkeydown="movePrev(event, this)" style="width:35px; height:40px; font-size:20px; text-align:center;" />
   <input type="text" maxlength="1" class="code-box" oninput="moveNext(this)" onkeydown="movePrev(event, this)" style="width:35px; height:40px; font-size:20px; text-align:center;" />
@@ -74,9 +68,8 @@
 
 <button onclick="verifyCode()">✅ تحقق</button>
 
-<!-- تم التسجيل بنجاح -->
-## ✅ تم التسجيل بنجاح!
-
+## ✅ تم التسجيل بنجاح!  
+       
 شكرًا لك، تم إرسال رسالة عبر واتساب.
 
 <script>
