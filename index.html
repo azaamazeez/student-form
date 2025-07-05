@@ -136,11 +136,11 @@
         <option value="+966">🇸🇦 +966</option>
         <option value="+20">🇪🇬 +20</option>
         <option value="+963">🇸🇾 +963</option>
-        <option value="+964">🇮🇶 +964</option>
+        <option value="+964">🇶🇼 +964</option>
         <option value="+971">🇦🇪 +971</option>
-        <option value="+962">🇯🇴 +962</option>
-        <option value="+965">🇰🇼 +965</option>
-        <option value="+973">🇧🇭 +973</option>
+        <option value="+962">🇸🇦 +962</option>
+        <option value="+965">🇰🇾 +965</option>
+        <option value="+973">🇷🇭 +973</option>
         <option value="+968">🇴🇲 +968</option>
         <option value="+212">🇲🇦 +212</option>
       </select>
@@ -149,27 +149,25 @@
     <button type="button" onclick="goToNotes()">التالي</button>
   </div>  <div class="section" id="step2">
     <h2>📌 تنبيهات هامة حول الدورة</h2>
-    <div class="notes">
-      <div class="note active">
-        <p><strong>أولاً: رسوم الدورة</strong><br>هذه الرسوم ليست مقابل الدروس، وإنما مقابل: التمارين اليومية، المذاكرات، الاختبارات، الشهادات، الإدارة.<br>✅ تُعد صدقة لدعم المشروع.</p>
-      </div>
-      <div class="note">
-        <p><strong>ثانيًا: حيادية المشايخ</strong><br>المشايخ لا علاقة لهم بأي رسوم ولا يتقاضون شيئًا.</p>
-      </div>
-      <div class="note">
-        <p><strong>ثالثًا: الشهادة والجائزة المالية</strong><br>📄 الشهادة برسوم 5$. 🎁 جوائز 200$ كل 6 أشهر للفائزين.</p>
-      </div>
-      <div class="note">
-        <p><strong>رابعًا: دعم استمرار المشروع</strong><br>المشروع يحتاج دعم لتغطية الإشراف والدعم الفني.</p>
-      </div>
-      <div class="note">
-        <p><strong>💰 كم ترغب في دفعه؟</strong></p>
-        <div class="payment-option" onclick="selectPayment(this, '10+')">أريد دفع 10$ + تبرع</div>
-        <div class="payment-option" onclick="selectPayment(this, '10')">أريد دفع 10$ فقط</div>
-        <div class="payment-option" onclick="selectPayment(this, '5')">أريد دفع 5$ فقط</div>
-        <div class="payment-option" onclick="selectPayment(this, '0')">أريد الدراسة مجانًا</div>
-        <input type="hidden" id="paymentInput" required>
-      </div>
+    <div class="note active">
+      <p><strong>أولاً: رسوم الدورة</strong><br>هذه الرسوم ليست مقابل الدروس، وإنما مقابل: التمارين اليومية، المذاكرات، الاختبارات، الشهادات، الإدارة.<br>✅ تُعد صدقة لدعم المشروع.</p>
+    </div>
+    <div class="note">
+      <p><strong>ثانيًا: حيادية المشايخ</strong><br>المشايخ لا علاقة لهم بأي رسوم ولا يتقاضون شيئًا.</p>
+    </div>
+    <div class="note">
+      <p><strong>ثالثًا: الشهادة والجائزة المالية</strong><br>📄 الشهادة برسوم 5$. 🎁 جوائز 200$ كل 6 أشهر للفائزين.</p>
+    </div>
+    <div class="note">
+      <p><strong>رابعًا: دعم استمرار المشروع</strong><br>المشروع يحتاج دعم لتغطية الإشراف والدعم الفني.</p>
+    </div>
+    <div class="note">
+      <p><strong>💰 كم ترغب في دفعه؟</strong></p>
+      <div class="payment-option" onclick="selectPayment(this, '10+')">أريد دفع 10$ + تبرع</div>
+      <div class="payment-option" onclick="selectPayment(this, '10')">أريد دفع 10$ فقط</div>
+      <div class="payment-option" onclick="selectPayment(this, '5')">أريد دفع 5$ فقط</div>
+      <div class="payment-option" onclick="selectPayment(this, '0')">أريد الدراسة مجانًا</div>
+      <input type="hidden" id="paymentInput" required>
     </div>
     <button onclick="nextNote()">التالي</button>
   </div>  <div class="section" id="step3">
@@ -177,12 +175,12 @@
     <p>📩 تم إرسال الرقم الأكاديمي الخاص بك إلى واتساب.</p>
     <label>يرجى إدخال الرقم الأكاديمي الخاص بك:</label>
     <div class="code-inputs">
-      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this, 0)" />
-      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this, 1)" />
-      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this, 2)" />
-      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this, 3)" />
-      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this, 4)" />
-      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this, 5)" />
+      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)">
+      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)">
+      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)">
+      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)">
+      <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)">
+      <input maxlength="1" type="text" inputmode="numeric">
     </div>
     <button type="button" onclick="copyAcademicCode()">📋 نسخ الرقم الأكاديمي</button>
     <button onclick="verifyCode()">✅ تحقق</button>
@@ -191,5 +189,72 @@
     <p>شكرًا لك، تم إرسال رسالة عبر واتساب.</p>
   </div>
 </div>
+<script>
+function selectGender(el, value) {
+  document.querySelectorAll(".gender-option").forEach(opt => opt.classList.remove("selected"));
+  el.classList.add("selected");
+  document.getElementById("genderInput").value = value;
+}
+function selectPayment(el, value) {
+  document.querySelectorAll(".payment-option").forEach(opt => opt.classList.remove("selected"));
+  el.classList.add("selected");
+  document.getElementById("paymentInput").value = value;
+}
+function goToNotes() {
+  document.getElementById("step1").classList.remove("active");
+  document.getElementById("step2").classList.add("active");
+}
+function nextNote() {
+  const payment = document.getElementById("paymentInput").value;
+  if (!payment) return alert("يرجى اختيار طريقة الدفع.");
+  document.getElementById("step2").classList.remove("active");
+  if (payment === "0") {
+    document.getElementById("success").classList.add("active");
+  } else {
+    document.getElementById("step3").classList.add("active");
+    sendVerificationCode();
+  }
+}
+let currentCode = "";
+function sendVerificationCode() {
+  const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
+  const last6 = phone.slice(-6);
+  currentCode = last6.split('').map(n => (parseInt(n) - 1 + 10) % 10).join('');
+  const msg = `🔐 الرقم الأكاديمي الخاص بك هو: ${currentCode}`;
+  sendWhatsApp(phone, msg);
+  alert("📩 تم إرسال الرقم الأكاديمي عبر واتساب.");
+}
+function verifyCode() {
+  const inputs = document.querySelectorAll(".code-inputs input");
+  const entered = Array.from(inputs).map(i => i.value).join("");
+  if (entered === currentCode) {
+    document.getElementById("step3").classList.remove("active");
+    document.getElementById("success").classList.add("active");
+  } else {
+    alert("❌ الرقم الأكاديمي غير صحيح.");
+  }
+}
+function moveToNext(input) {
+  if (input.value.length === 1) {
+    const next = input.nextElementSibling;
+    if (next && next.tagName === "INPUT") {
+      next.focus();
+    }
+  }
+}
+function copyAcademicCode() {
+  if (!currentCode) return alert("⚠️ لم يتم توليد الرقم الأكاديمي بعد.");
+  navigator.clipboard.writeText(currentCode).then(() => alert("✅ تم نسخ الرقم الأكاديمي بنجاح."));
+}
+async function sendWhatsApp(phone, message) {
+  const inst = "instance129389";
+  const tok = "9grguvsi1pp4buyr";
+  await fetch(`https://api.ultramsg.com/${inst}/messages/chat?token=${tok}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ to: phone, body: message })
+  });
+}
+</script>
 </body>
 </html>
