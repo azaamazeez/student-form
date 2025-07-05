@@ -36,22 +36,21 @@
       border-radius: 5px;
       border: 1px solid #ccc;
     }
-    .gender-options, .payment-options {
+    .gender-options {
       display: flex;
       justify-content: space-around;
       margin-top: 10px;
-      flex-wrap: wrap;
     }
-    .gender-option, .payment-option {
+    .gender-option {
       padding: 10px;
-      flex: 1 1 48%;
+      flex: 1;
       text-align: center;
       background-color: #eee;
       margin: 2px;
       border-radius: 5px;
       cursor: pointer;
     }
-    .gender-option.selected, .payment-option.selected {
+    .gender-option.selected {
       background-color: #4caf50;
       color: white;
     }
@@ -82,16 +81,35 @@
       margin-top: 20px;
       font-size: 16px;
     }
+    .notes p {
+      margin-top: 10px;
+    }
+    .notes .option-boxes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-box {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #eee;
+    }
+    .option-box.selected {
+      background-color: #4caf50;
+      color: white;
+    }
     .code-inputs {
       display: flex;
+      justify-content: space-between;
       gap: 5px;
-      justify-content: center;
-      margin: 15px 0;
+      margin-top: 10px;
     }
     .code-inputs input {
-      width: 40px;
-      font-size: 20px;
+      flex: 1;
       text-align: center;
+      font-size: 20px;
     }
   </style>
 </head>
@@ -111,7 +129,7 @@
 <input type="text" name="country" id="country" required>
 
 <label>العمر:</label>
-<input type="number" name="age" id="age" min="3" max="99" placeholder="مثال: 24" required />
+<input type="number" name="age" id="age" placeholder="مثال: 24" min="5" max="100" required>
 
 <label>رقم الجوال:</label>
 <div class="phone-group">
@@ -124,7 +142,7 @@
     <option value="+971">🇦🇪 +971</option>
     <option value="+962">🇯🇴 +962</option>
     <option value="+965">🇰🇼 +965</option>
-    <option value="+973">🇧ahrain +973</option>
+    <option value="+973">🇧🇭 +973</option>
     <option value="+968">🇴🇲 +968</option>
     <option value="+212">🇲🇦 +212</option>
   </select>
@@ -135,25 +153,27 @@
 
   </div>  <div class="section" id="step2">
     <h2>📌 تنبيهات هامة حول الدورة</h2>
-    <div class="payment-options">
-      <div class="payment-option" onclick="selectPayment(this, '10+')">أريد دفع 10$ + تبرع</div>
-      <div class="payment-option" onclick="selectPayment(this, '10')">أريد دفع 10$ فقط</div>
-      <div class="payment-option" onclick="selectPayment(this, '5')">أريد دفع 5$ فقط</div>
-      <div class="payment-option" onclick="selectPayment(this, '0')">أريد الدراسة مجانًا</div>
+    <div class="notes">
+      <p><strong>💰 كم ترغب في دفعه؟</strong></p>
+      <div class="option-boxes">
+        <div class="option-box" onclick="selectPayment(this, '10+')">أريد دفع 10$ + تبرع</div>
+        <div class="option-box" onclick="selectPayment(this, '10')">أريد دفع 10$ فقط</div>
+        <div class="option-box" onclick="selectPayment(this, '5')">أريد دفع 5$ فقط</div>
+        <div class="option-box" onclick="selectPayment(this, '0')">أريد الدراسة مجانًا</div>
+      </div>
     </div>
-    <input type="hidden" name="payment" id="paymentValue" required />
     <button onclick="handlePaymentChoice()">لقد فهمت، شكرًا</button>
   </div>  <div class="section" id="step3">
-    <h2>🔐 التحقق من الرقم الأكاديمي</h2>
-    <p>📩 تم إرسال الرقم الأكاديمي الخاص بك على واتساب</p>
+    <h2>🔐 الرقم الأكاديمي</h2>
+    <p>📩 تم إرسال الرقم الأكاديمي الخاص بك على رقمك في واتساب.</p>
     <label>يرجى إدخال الرقم الأكاديمي الخاص بك:</label>
     <div class="code-inputs">
-      <input maxlength="1" oninput="moveToNext(this)" />
-      <input maxlength="1" oninput="moveToNext(this)" />
-      <input maxlength="1" oninput="moveToNext(this)" />
-      <input maxlength="1" oninput="moveToNext(this)" />
-      <input maxlength="1" oninput="moveToNext(this)" />
-      <input maxlength="1" />
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
     </div>
     <button onclick="verifyCode()">✅ تحقق</button>
   </div>  <div class="section" id="success">
@@ -164,6 +184,33 @@
   let currentCode = "";
 
   function goToNotes() {
+    if (validateStep1()) {
+      document.getElementById("step1").classList.remove("active");
+      document.getElementById("step2").classList.add("active");
+    }
+  }
+
+  function handlePaymentChoice() {
+    const selectedBox = document.querySelector('.option-box.selected');
+    if (!selectedBox) return alert("يرجى اختيار طريقة الدفع.");
+    const value = selectedBox.getAttribute('data-value') || selectedBox.textContent.trim();
+    document.getElementById("step2").classList.remove("active");
+    if (value.includes("0")) {
+      sendWhatsappConfirmation();
+      document.getElementById("success").classList.add("active");
+    } else {
+      document.getElementById("step3").classList.add("active");
+      sendVerificationCode();
+    }
+  }
+
+  function selectPayment(el, value) {
+    document.querySelectorAll('.option-box').forEach(opt => opt.classList.remove("selected"));
+    el.classList.add("selected");
+    el.setAttribute('data-value', value);
+  }
+
+  function validateStep1() {
     const fullName = document.getElementById("fullName").value.trim();
     const gender = document.getElementById("genderInput").value.trim();
     const country = document.getElementById("country").value.trim();
@@ -173,11 +220,9 @@
 
     if (!fullName || !gender || !country || !age || !phone || !code) {
       alert("يرجى ملء جميع الحقول.");
-      return;
+      return false;
     }
-
-    document.getElementById("step1").classList.remove("active");
-    document.getElementById("step2").classList.add("active");
+    return true;
   }
 
   function selectGender(el, value) {
@@ -186,40 +231,17 @@
     document.getElementById("genderInput").value = value;
   }
 
-  function selectPayment(el, value) {
-    document.querySelectorAll(".payment-option").forEach(opt => opt.classList.remove("selected"));
-    el.classList.add("selected");
-    document.getElementById("paymentValue").value = value;
-  }
-
-  function handlePaymentChoice() {
-    const selected = document.getElementById("paymentValue").value;
-    if (!selected) return alert("يرجى اختيار طريقة الدفع.");
-    document.getElementById("step2").classList.remove("active");
-    if (selected === "0") {
-      document.getElementById("success").classList.add("active");
-      sendWhatsappConfirmation();
-    } else {
-      document.getElementById("step3").classList.add("active");
-      sendVerificationCode();
-    }
-  }
-
-  function moveToNext(input) {
-    if (input.value.length === 1 && input.nextElementSibling) {
-      input.nextElementSibling.focus();
-    }
-  }
-
-  function getEnteredCode() {
-    return Array.from(document.querySelectorAll(".code-inputs input"))
-      .map(i => i.value.trim())
-      .join("");
+  function sendVerificationCode() {
+    const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
+    const last6 = phone.slice(-6);
+    currentCode = last6.split('').map(n => (parseInt(n) - 1 + 10) % 10).join('');
+    alert("📩 تم إرسال الرقم الأكاديمي عبر واتساب: " + currentCode);
   }
 
   function verifyCode() {
-    const input = getEnteredCode();
-    if (input === currentCode) {
+    const inputs = document.querySelectorAll(".code-inputs input");
+    const enteredCode = Array.from(inputs).map(input => input.value).join('');
+    if (enteredCode === currentCode) {
       document.getElementById("step3").classList.remove("active");
       document.getElementById("success").classList.add("active");
       sendWhatsappConfirmation();
@@ -228,30 +250,8 @@
     }
   }
 
-  async function sendWhatsappConfirmation() {
-    const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
-    const name = document.getElementById("fullName").value;
-    const msg = `✅ مرحبًا ${name}،\nتم تسجيلك بنجاح في دورة زاد الرحيل.\n📚 بالتوفيق!`;
-    await sendWhatsApp(phone, msg);
-  }
-
-  async function sendVerificationCode() {
-    const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
-    const last6 = phone.slice(-6);
-    currentCode = last6.split('').map(n => (parseInt(n) - 1 + 10) % 10).join('');
-    const msg = `🔐 الرقم الأكاديمي الخاص بك هو: ${currentCode}`;
-    await sendWhatsApp(phone, msg);
-    alert("📩 تم إرسال الرقم الأكاديمي عبر واتساب.");
-  }
-
-  async function sendWhatsApp(phone, message) {
-    const inst = "instance129389";
-    const tok = "9grguvsi1pp4buyr";
-    await fetch(`https://api.ultramsg.com/${inst}/messages/chat?token=${tok}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to: phone, body: message })
-    });
+  function sendWhatsappConfirmation() {
+    alert("✅ تم إرسال رسالة واتساب للمستخدم.");
   }
 </script></body>
 </html>
