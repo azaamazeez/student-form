@@ -2,45 +2,61 @@
 <head>
   <meta charset="UTF-8">
   <title>📋 استمارة التسجيل</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: 'Segoe UI', sans-serif; direction: rtl; background: #f9f9f9; padding: 20px; }
-    .container { max-width: 700px; margin: auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    body { font-family: 'Segoe UI', sans-serif; direction: rtl; background: #f9f9f9; padding: 10px; margin: 0; }
+    .container { max-width: 480px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     h2 { text-align: center; color: #00796b; }
     label { display: block; margin-top: 15px; font-weight: bold; }
     input, select, button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 15px; }
-    .age-group { display: flex; gap: 10px; }
-    .age-group input { flex: 1; }
     .section { display: none; }
     .section.active { display: block; }
     .notes { background: #f1f1f1; padding: 15px; border-radius: 8px; margin-top: 15px; }
+    .gender-options { display: flex; gap: 10px; margin-top: 5px; }
+    .gender-option { flex: 1; padding: 10px; text-align: center; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; background: #eee; }
+    .gender-option.active { background: #4caf50; color: white; border-color: #388e3c; }
+    .phone-group { display: flex; gap: 10px; }
+    .phone-group select { width: 35%; }
+    .phone-group input { flex: 1; }
   </style>
 </head>
 <body>
 <div class="container">  <div class="section active" id="formSection">
     <h2>📋 استمارة التسجيل</h2>
-    <label>الاسم الأول:</label><input type="text" name="firstName" required />
-    <label>الكنية:</label><input type="text" name="lastName" required />
-    <label>الجنس:</label>
-    <select name="gender" required>
-      <option value="">اختر الجنس</option><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option>
-    </select>
-    <label>دولة الإقامة:</label><input type="text" name="country" required />
-    <label>تاريخ الميلاد:</label>
-    <div class="age-group">
-      <input type="number" name="ageDay" placeholder="اليوم" min="1" max="31" required />
-      <input type="number" name="ageMonth" placeholder="الشهر" min="1" max="12" required />
-      <input type="number" name="ageYear" placeholder="السنة" min="1950" max="2025" required />
-    </div>
-    <label>الفئة الدراسية:</label>
-    <select name="grade" required>
-      <option value="">اختر الفئة الدراسية</option>
-      <option>الصف الأول</option><option>الصف الثاني</option><option>الصف الثالث</option>
-      <option>الصف الرابع</option><option>الصف الخامس</option><option>الصف السادس</option>
-      <option>الصف السابع</option><option>الصف الثامن</option><option>الصف التاسع</option>
-      <option>الصف العاشر</option><option>الصف الحادي عشر</option><option>البكالوريا</option><option>الجامعة</option>
-    </select>
-    <label>رقم الجوال (مع رمز الدولة):</label><input type="tel" name="phone" required />
-    <button type="button" onclick="goToNotes()">التالي</button>
+    <label>الاسم الثلاثي:</label>
+    <input type="text" name="firstName" required /><label>الجنس:</label>
+<div class="gender-options">
+  <div class="gender-option" onclick="selectGender(this, 'ذكر')">ذكر</div>
+  <div class="gender-option" onclick="selectGender(this, 'أنثى')">أنثى</div>
+</div>
+<input type="hidden" name="gender" required />
+
+<label>دولة الإقامة:</label>
+<input type="text" name="country" required />
+
+<label>تاريخ الميلاد:</label>
+<input type="text" name="birthDate" placeholder="YYYY/MM/DD" pattern="\\d{4}/\\d{2}/\\d{2}" required />
+
+<label>رقم الجوال:</label>
+<div class="phone-group">
+  <select name="countryCode" required>
+    <option value="">+ رمز الدولة</option>
+    <option value="+966">🇸🇦 +966</option>
+    <option value="+20">🇪🇬 +20</option>
+    <option value="+963">🇸🇾 +963</option>
+    <option value="+964">🇮🇶 +964</option>
+    <option value="+971">🇦🇪 +971</option>
+    <option value="+962">🇯🇴 +962</option>
+    <option value="+965">🇰🇼 +965</option>
+    <option value="+973">🇧🇭 +973</option>
+    <option value="+968">🇴🇲 +968</option>
+    <option value="+212">🇲🇦 +212</option>
+  </select>
+  <input type="tel" name="phone" placeholder="رقم الهاتف" required />
+</div>
+
+<button type="button" onclick="goToNotes()">التالي</button>
+
   </div>  <div class="section" id="notesSection">
     <h2>📌 تنبيهات هامة حول الدورة</h2>
     <div class="notes">
@@ -79,10 +95,17 @@
 </div><script>
   let userData = {}, correctCode = '';
 
+  function selectGender(el, value) {
+    document.querySelectorAll('.gender-option').forEach(opt => opt.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelector('[name="gender"]').value = value;
+  }
+
   function goToNotes() {
     const inputs = document.querySelectorAll('#formSection input, #formSection select');
     for (const i of inputs) if (!i.checkValidity()) return i.reportValidity();
     inputs.forEach(input => userData[input.name] = input.value);
+    userData.phone = userData.countryCode + userData.phone;
     showSection('notesSection');
   }
 
@@ -110,7 +133,7 @@
     if (!sel) return alert("يرجى اختيار أحد الخيارات");
     userData.payment = sel.value;
     if (sel.value === '0') {
-      const msg = `مرحبًا ${userData.firstName} ${userData.lastName}\nتم تسجيلك مجانًا ضمن دورة ${userData.grade}.\nبالتوفيق.`;
+      const msg = `مرحبًا ${userData.firstName}\nتم تسجيلك مجانًا.\nبالتوفيق.`;
       sendWhatsApp(userData.phone, msg).then(() => alert("✅ تم الإرسال بنجاح"));
     } else {
       correctCode = generateCode(userData.phone);
@@ -129,7 +152,7 @@
   function verifyCode() {
     const entered = document.getElementById('enteredCode').value.trim();
     if (entered === correctCode) {
-      const msg = `✅ تم التحقق بنجاح\n${userData.firstName} ${userData.lastName} - ${userData.grade}`;
+      const msg = `✅ تم التحقق بنجاح\n${userData.firstName}`;
       sendWhatsApp(userData.phone, msg).then(() => alert("🎉 تم التسجيل بنجاح!"));
     } else {
       alert("❌ الكود غير صحيح");
