@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>📋 استمارة التسجيل</title>
   <style>
     body {
@@ -109,24 +109,36 @@
       color: white;
       border-color: #4caf50;
     }
+    .code-inputs {
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    .code-inputs input {
+      width: 40px;
+      text-align: center;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Step 1: البيانات الأساسية -->
     <div class="section active" id="step1">
       <h2>📋 استمارة التسجيل</h2>
       <label>الاسم الثلاثي:</label>
-      <input type="text" id="fullName" required>
+      <input type="text" id="fullName" required />
       <label>الجنس:</label>
       <div class="gender-options">
         <div class="gender-option" onclick="selectGender(this, 'ذكر')">ذكر</div>
         <div class="gender-option" onclick="selectGender(this, 'أنثى')">أنثى</div>
       </div>
-      <input type="hidden" id="genderInput" required>
+      <input type="hidden" id="genderInput" required />
       <label>دولة الإقامة:</label>
-      <input type="text" id="country" required>
+      <input type="text" id="country" required />
       <label>العمر:</label>
-      <input type="number" id="age" required>
+      <input type="number" id="age" required />
       <label>رقم الجوال:</label>
       <div class="phone-group">
         <select id="countryCode" required>
@@ -147,11 +159,14 @@
       <button onclick="goToStep2()">التالي</button>
     </div>
 
+    <!-- Step 2: اختيار الدفع -->
     <div class="section" id="step2">
       <h2>💰 رسوم الدورة</h2>
       <div class="note">
-        <p>لعدم وجود أي مصدر دخل لمؤسسة زاد الرحيل الشرعية يتم وضع رسوم رمزية وهي (10 دولار) على القادرين<br>
-        ولا يلزم الغير قادرين على دفع هذا المبلغ الرمزي</p>
+        <p>
+          لعدم وجود أي مصدر دخل لمؤسسة زاد الرحيل الشرعية يتم وضع رسوم رمزية وهي (10 دولار) على القادرين<br />
+          ولا يلزم الغير قادرين على دفع هذا المبلغ الرمزي
+        </p>
       </div>
       <label>كم هو المبلغ الذي تريد دفعه؟</label>
       <div class="payment-options">
@@ -160,12 +175,29 @@
         <div class="payment-option" onclick="selectPayment(this, '5')">🧾 أريد دفع 5$ فقط</div>
         <div class="payment-option" onclick="selectPayment(this, '0')">🎓 أريد الدراسة مجانًا</div>
       </div>
-      <input type="hidden" id="paymentInput" required>
+      <input type="hidden" id="paymentInput" required />
       <button onclick="handlePaymentSelection()">التالي</button>
     </div>
 
+    <!-- Step 3: ملاحظات الدفع -->
     <div class="section" id="notesSection"></div>
 
+    <!-- Step 4: التحقق من الرقم الأكاديمي -->
+    <div class="section" id="step3">
+      <h2>🔐 التحقق من الرقم الأكاديمي</h2>
+      <p>📩 تم إرسال الرقم الأكاديمي الخاص بك إلى واتساب.</p>
+      <div class="code-inputs">
+        <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)" />
+        <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)" />
+        <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)" />
+        <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)" />
+        <input maxlength="1" type="text" inputmode="numeric" oninput="moveToNext(this)" />
+        <input maxlength="1" type="text" inputmode="numeric" />
+      </div>
+      <button onclick="verifyCode()">✅ تحقق</button>
+    </div>
+
+    <!-- Step 5: تأكيد التسجيل -->
     <div class="section" id="stepFinal">
       <h2>✅ تم التسجيل بنجاح!</h2>
       <p>شكرًا لك، تم إرسال رسالة عبر واتساب.</p>
@@ -173,6 +205,7 @@
   </div>
 
   <script>
+    let currentCode = "";
     function selectGender(el, value) {
       document.querySelectorAll(".gender-option").forEach(opt => opt.classList.remove("selected"));
       el.classList.add("selected");
@@ -199,49 +232,134 @@
     }
     function handlePaymentSelection() {
       const payment = document.getElementById("paymentInput").value;
-      if (!payment) return alert("يرجى اختيار طريقة الدفع.");
+      if (!payment) {
+        alert("يرجى اختيار طريقة الدفع.");
+        return;
+      }
       document.getElementById("step2").classList.remove("active");
-      const section = document.getElementById("notesSection");
-      section.innerHTML = getNotesByPayment(payment);
-      section.classList.add("active");
-    }
-    function getNotesByPayment(payment) {
-      if (payment === '0') {
-        return `<div class="note"><p><strong>ملاحظة:</strong><br><br>
+
+      if (payment === "0") {
+        // إذا الدراسة مجانية
+        const notesSection = document.getElementById("notesSection");
+        notesSection.innerHTML = `
+        <div class="note"><strong>ملاحظة:</strong><br><br>
         *توضيح حول الشهادة والجائزة المالية*<br><br>
         • <strong>الشهادة:</strong> تُمنح لكل من شارك في الدورة، واستمع لجزء من الدروس، وأدى الاختبار النهائي وحصل على نتيجة 50٪ أو أكثر، ويجب دفع رسوم الشهادة البالغة 5 دولارات للحصول عليها، إذا لم يرغب الطالب في الشهادة، يمكنه دراسة <strong>الدورة مجانًا،</strong> وتقديم الاختبار النهائي <strong>ومعرفة نتيجته،</strong> ولكن دون الحصول على الشهادة.<br><br>
         • <strong>الجائزة المالية:</strong> نظام القرعة:<br>
         كل 6 أشهر تُمنح جائزة مالية مجموعها 200 دولار، تُوزع على عدد من الفائزين.<br>
         خلال هذه المدة تُقام دورات في مجالات متنوعة مثل النحو، الفقه، التجويد، العقيدة وغيرها.<br>
         في كل دورة، من يحصل على العلامة التامة يدخل في قرعة خاصة بتلك الدورة، والفائز منها يتأهل للقرعة الكبرى.<br>
-        في نهاية الستة أشهر، يُجرى سحب قرعة كبرى بين جميع من فازوا في قرعات الدورات، ويتم اختيار عدة فائزين تُوزع عليهم الجائزة المالية بنِسب مختلفة حسب ترتيب القرعة.</p></div>
-        <div class="note"><p><strong>📌 الدورات تُقدَّم مجانًا بدون أي رسوم إلزامية</strong><br><br>
+        في نهاية الستة أشهر، يُجرى سحب قرعة كبرى بين جميع من فازوا في قرعات الدورات، ويتم اختيار عدة فائزين تُوزع عليهم الجائزة المالية بنِسب مختلفة حسب ترتيب القرعة.
+        </div>
+        <div class="note"><strong>📌 الدورات تُقدَّم مجانًا بدون أي رسوم إلزامية</strong><br><br>
         لكن استمرار هذه الدورات يحتاج إلى مصاريف تشغيلية كالإشراف والمتابعة والخدمات التقنية.<br><br>
         لذلك من كان في وسعه أن يدفع شيئًا لدعم هذا الخير، فباب الأجر مفتوح<br>
         ﴿وما أنفقتم من شيء فإن اللهَ يُخلفه وهو خير الرازقين﴾<br>
-        جزاكم الله خيرًا وفقكم لكل خير.</p></div>
-        <button onclick="completeRegistration()">إنهاء التسجيل</button>`;
+        جزاكم الله خيرًا وفقكم لكل خير.</div>
+        <button onclick="completeRegistration()">إنهاء التسجيل</button>
+        `;
+        notesSection.classList.add("active");
       } else {
-        return `<div class="note"><p><strong>١. ملاحظة:</strong><br><br>
+        // إذا الدفع مطلوب، نظهر الملاحظات ثم ننتقل للخطوة التالية (التحقق)
+        const notesSection = document.getElementById("notesSection");
+        notesSection.innerHTML = `
+        <div class="note"><strong>١. ملاحظة:</strong><br><br>
         أولاً: الرسوم الرمزية السابقة إنما هي نوع من أنواع الصدقة<br><br>
         ثانياً: الرسوم ليست على الدروس لأن غالب الدروس موجودة على اليوتيوب على قنوات المشايخ الرسمية إنما هي على ما يلي:<br>
-        ١. التمارين اليومية<br>٢. المذاكرات الأولى والثانية<br>٣. الاختبارات النصفية والنهائية<br>٤. تصميم الشهادة<br>٥. إدارة الدورة</p></div>
-        <div class="note"><p><strong>٢. ملاحظة:</strong><br>
-        من خلال الملاحظات السابقة تلاحظ أن المشايخ والأساتذة (لا علاقة لهم بالرسوم نهائيًا) ولا يأخذون قرشًا</p></div>
-        <div class="note"><p><strong>٣. ملاحظة:</strong><br><br>
+        ١. التمارين اليومية<br>٢. المذاكرات الأولى والثانية<br>٣. الاختبارات النصفية والنهائية<br>٤. تصميم الشهادة<br>٥. إدارة الدورة
+        </div>
+        <div class="note"><strong>٢. ملاحظة:</strong><br>
+        من خلال الملاحظات السابقة تلاحظ أن المشايخ والأساتذة (لا علاقة لهم بالرسوم نهائيًا) ولا يأخذون قرشًا
+        </div>
+        <div class="note"><strong>٣. ملاحظة:</strong><br><br>
         *توضيح حول الشهادة والجائزة المالية*<br><br>
         • <strong>الشهادة:</strong> تُمنح لكل من شارك في الدورة، واستمع لجزء من الدروس، وأدى الاختبار النهائي وحصل على نتيجة 50٪ أو أكثر، ويجب دفع رسوم الشهادة البالغة 5 دولارات للحصول عليها، إذا لم يرغب الطالب في الشهادة، يمكنه دراسة <strong>الدورة مجانًا،</strong> وتقديم الاختبار النهائي <strong>ومعرفة نتيجته،</strong> ولكن دون الحصول على الشهادة.<br><br>
         • <strong>الجائزة المالية:</strong> نظام القرعة:<br>
         كل 6 أشهر تُمنح جائزة مالية مجموعها 200 دولار، تُوزع على عدد من الفائزين.<br>
         خلال هذه المدة تُقام دورات في مجالات متنوعة مثل النحو، الفقه، التجويد، العقيدة وغيرها.<br>
         في كل دورة، من يحصل على العلامة التامة يدخل في قرعة خاصة بتلك الدورة، والفائز منها يتأهل للقرعة الكبرى.<br>
-        في نهاية الستة أشهر، يُجرى سحب قرعة كبرى بين جميع من فازوا في قرعات الدورات، ويتم اختيار عدة فائزين تُوزع عليهم الجائزة المالية بنِسب مختلفة حسب ترتيب القرعة.</p></div>
-        <button onclick="completeRegistration()">إنهاء التسجيل</button>`;
+        في نهاية الستة أشهر، يُجرى سحب قرعة كبرى بين جميع من فازوا في قرعات الدورات، ويتم اختيار عدة فائزين تُوزع عليهم الجائزة المالية بنِسب مختلفة حسب ترتيب القرعة.
+        </div>
+        <button onclick="goToVerification()">التالي</button>
+        `;
+        notesSection.classList.add("active");
       }
     }
-    function completeRegistration() {
+
+    function goToVerification() {
+      // إخفاء ملاحظات الدفع والانتقال للخطوة 3 (التحقق)
       document.getElementById("notesSection").classList.remove("active");
-      document.getElementById("stepFinal").classList.add("active");
+      document.getElementById("step3").classList.add("active");
+
+      // إرسال رمز الأكاديمي عبر واتساب
+      sendVerificationCode();
+    }
+
+    function moveToNext(input) {
+      if (input.value.length === 1) {
+        const next = input.nextElementSibling;
+        if (next && next.tagName === "INPUT") {
+          next.focus();
+        }
+      }
+    }
+
+    let currentCode = "";
+
+    function sendVerificationCode() {
+      // توليد رمز أكاديمي عشوائي 6 أرقام أو يمكنك تغييره حسب الحاجة
+      currentCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+      const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
+      const msg = `🔐 الرقم الأكاديمي الخاص بك هو: ${currentCode}`;
+
+      sendWhatsApp(phone, msg).then(() => {
+        alert("📩 تم إرسال الرقم الأكاديمي عبر واتساب.");
+      }).catch(() => {
+        alert("حدث خطأ أثناء إرسال الرقم الأكاديمي عبر واتساب.");
+      });
+    }
+
+    async function sendWhatsApp(phone, message) {
+      // استبدل القيم هنا بالقيم الحقيقية الخاصة بك من خدمة WhatsApp API
+      const inst = "instance129389";
+      const tok = "9grguvsi1pp4buyr";
+
+      // إرسال الطلب
+      await fetch(`https://api.ultramsg.com/${inst}/messages/chat?token=${tok}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: phone, body: message }),
+      });
+    }
+
+    function verifyCode() {
+      const inputs = document.querySelectorAll(".code-inputs input");
+      const entered = Array.from(inputs).map(i => i.value).join("");
+
+      if (entered === currentCode) {
+        document.getElementById("step3").classList.remove("active");
+        document.getElementById("stepFinal").classList.add("active");
+        sendFinalConfirmation();
+      } else {
+        alert("❌ الرقم الأكاديمي غير صحيح.");
+      }
+    }
+
+    async function sendFinalConfirmation() {
+      const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
+      const name = document.getElementById("fullName").value;
+      const age = document.getElementById("age").value;
+      const country = document.getElementById("country").value;
+      const academicNumber = currentCode;
+
+      const msg = `✅ مرحبًا ${name}،\nتم تسجيلك بنجاح في دورة زاد الرحيل.\n\n📋 بياناتك:\n- العمر: ${age}\n- رقمك الأكاديمي: ${academicNumber}\n- السكن: ${country}\n\n📚 بالتوفيق!`;
+
+      try {
+        await sendWhatsApp(phone, msg);
+      } catch {
+        alert("حدث خطأ أثناء إرسال رسالة التأكيد عبر واتساب.");
+      }
     }
   </script>
 </body>
