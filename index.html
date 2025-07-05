@@ -110,7 +110,7 @@
     <input type="text" name="country" id="country" required>
 
     <label>تاريخ الميلاد:</label>
-    <input type="date" name="birthDate" id="birthDate" required>
+    <input type="text" name="birthDate" id="birthDate" placeholder="YYYY/MM/DD" required>
 
     <label>رقم الجوال:</label>
     <div class="phone-group">
@@ -222,6 +222,28 @@
     document.getElementById("genderInput").value = value;
   }
 
+  // تنسيق تاريخ الميلاد تلقائيًا بشكل آمن
+  document.getElementById("birthDate").addEventListener("input", function () {
+    let val = this.value.replace(/\D/g, "").slice(0, 8);
+    let formatted = "";
+
+    if (val.length >= 4) {
+      formatted += val.slice(0, 4);
+      if (val.length >= 5) formatted += "/";
+    }
+
+    if (val.length >= 5) {
+      formatted += val.slice(4, 6);
+      if (val.length >= 7) formatted += "/";
+    }
+
+    if (val.length >= 7) {
+      formatted += val.slice(6, 8);
+    }
+
+    this.value = formatted;
+  });
+
   // توليد كود تحقق وهمي وإرساله
   let currentCode = "";
   function sendVerificationCode() {
@@ -229,7 +251,6 @@
     const last6 = phone.slice(-6);
     currentCode = last6.split('').map(n => (parseInt(n) - 1 + 10) % 10).join('');
     alert(`📩 سيتم إرسال الكود عبر واتساب: ${currentCode}`);
-    // هنا ترسل رسالة حقيقية عبر UltraMsg أو غيره إن أردت
   }
 
   function verifyCode() {
@@ -245,7 +266,6 @@
 
   function sendWhatsappConfirmation() {
     alert("✅ تم إرسال رسالة واتساب للمستخدم.");
-    // يمكن هنا إرسال رسالة فعلية
   }
 </script>
 
