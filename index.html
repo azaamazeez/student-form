@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,23 +36,26 @@
       border-radius: 5px;
       border: 1px solid #ccc;
     }
-    .gender-options {
+    .gender-options, .payment-options {
       display: flex;
       justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 5px;
       margin-top: 10px;
     }
-    .gender-option {
+    .gender-option, .payment-option {
       padding: 10px;
       flex: 1;
       text-align: center;
       background-color: #eee;
-      margin: 2px;
       border-radius: 5px;
       cursor: pointer;
+      border: 1px solid #ccc;
     }
-    .gender-option.selected {
+    .gender-option.selected, .payment-option.selected {
       background-color: #4caf50;
       color: white;
+      border-color: #388e3c;
     }
     .phone-group {
       display: flex;
@@ -88,28 +90,15 @@
     .note.active {
       display: block;
     }
-    .payment-option {
-      padding: 10px;
-      background-color: #eee;
-      margin: 5px 0;
-      border-radius: 5px;
-      cursor: pointer;
-      border: 2px solid transparent;
-    }
-    .payment-option.selected {
-      background-color: #4caf50;
-      color: white;
-      border-color: #4caf50;
-    }
-    .code-inputs {
+    .code-input {
       display: flex;
       justify-content: space-between;
       gap: 5px;
     }
-    .code-inputs input {
-      width: 40px;
+    .code-input input {
       text-align: center;
-      font-size: 18px;
+      font-size: 20px;
+      flex: 1;
     }
   </style>
 </head>
@@ -118,24 +107,20 @@
   <div class="section active" id="step1">
     <h2>📋 استمارة التسجيل</h2>
     <label>الاسم الثلاثي:</label>
-    <input type="text" name="fullName" id="fullName" required>
-
+    <input type="text" id="fullName" required>
     <label>الجنس:</label>
     <div class="gender-options">
-      <div class="gender-option" onclick="selectGender(this, 'ذكر')">ذكر</div>
-      <div class="gender-option" onclick="selectGender(this, 'أنثى')">أنثى</div>
+      <div class="gender-option" onclick="selectOption(this, 'gender', 'ذكر')">ذكر</div>
+      <div class="gender-option" onclick="selectOption(this, 'gender', 'أنثى')">أنثى</div>
     </div>
-    <input type="hidden" name="gender" id="genderInput" required>
-
+    <input type="hidden" id="gender">
     <label>دولة الإقامة:</label>
-    <input type="text" name="country" id="country" required>
-
+    <input type="text" id="country" required>
     <label>العمر:</label>
-    <input type="number" name="age" id="age" placeholder="مثال: 24" min="1" max="99" required>
-
+    <input type="number" id="birthDate" placeholder="مثال: 24" min="10" max="99" required>
     <label>رقم الجوال:</label>
     <div class="phone-group">
-      <select name="countryCode" id="countryCode" required>
+      <select id="countryCode" required>
         <option value="">+ رمز الدولة</option>
         <option value="+966">🇸🇦 +966</option>
         <option value="+20">🇪🇬 +20</option>
@@ -147,159 +132,77 @@
         <option value="+973">🇧🇭 +973</option>
         <option value="+968">🇴🇲 +968</option>
         <option value="+212">🇲🇦 +212</option>
-        <!-- يمكن إضافة المزيد من الدول -->
+        <!-- يمكن إضافة جميع الدول لاحقًا -->
       </select>
-      <input type="tel" name="phone" id="phone" placeholder="رقم الهاتف" required />
+      <input type="tel" id="phone" placeholder="رقم الهاتف" required />
     </div>
-
-    <button type="button" onclick="goToNotes()">التالي</button>
-  </div>
-
-  <div class="section" id="step2">
+    <button onclick="goToNotes()">التالي</button>
+  </div>  <div class="section" id="step2">
     <h2>📌 تنبيهات هامة حول الدورة</h2>
     <div class="notes">
       <div class="note active">
-        <p><strong>أولاً: رسوم الدورة</strong><br>هذه الرسوم ليست مقابل الدروس، وإنما مقابل: التمارين اليومية، المذاكرات، الاختبارات، الشهادات، الإدارة.<br>✅ تُعد صدقة لدعم المشروع.</p>
+        <p><strong>أولاً: رسوم الدورة</strong><br>هذه الرسوم ليست مقابل الدروس، وإنما مقابل التمارين والمذاكرات والشهادات.</p>
       </div>
       <div class="note">
-        <p><strong>ثانيًا: حيادية المشايخ</strong><br>المشايخ لا علاقة لهم بأي رسوم ولا يتقاضون شيئًا.</p>
+        <p><strong>ثانيًا: حيادية المشايخ</strong><br>المشايخ لا يتقاضون أي رسوم.</p>
       </div>
       <div class="note">
-        <p><strong>ثالثًا: الشهادة والجائزة المالية</strong><br>📄 الشهادة برسوم 5$. 🎁 جوائز 200$ كل 6 أشهر للفائزين.</p>
+        <p><strong>ثالثًا: الشهادة والجائزة المالية</strong><br>الشهادة برسوم 5$، وجوائز 200$ نصف سنوية.</p>
       </div>
       <div class="note">
-        <p><strong>رابعًا: دعم استمرار المشروع</strong><br>المشروع يحتاج دعم لتغطية الإشراف والدعم الفني.</p>
+        <p><strong>رابعًا: دعم المشروع</strong><br>نحتاج دعمًا للاستمرار.</p>
       </div>
       <div class="note">
         <p><strong>💰 كم ترغب في دفعه؟</strong></p>
-        <div class="payment-option" onclick="selectPayment(this, '10+')">أريد دفع 10$ + تبرع</div>
-        <div class="payment-option" onclick="selectPayment(this, '10')">أريد دفع 10$ فقط</div>
-        <div class="payment-option" onclick="selectPayment(this, '5')">أريد دفع 5$ فقط</div>
-        <div class="payment-option" onclick="selectPayment(this, '0')">أريد الدراسة مجانًا</div>
-        <input type="hidden" name="payment" id="paymentValue" />
+        <div class="payment-options">
+          <div class="payment-option" onclick="selectOption(this, 'payment', '10+')">10$ + تبرع</div>
+          <div class="payment-option" onclick="selectOption(this, 'payment', '10')">10$ فقط</div>
+          <div class="payment-option" onclick="selectOption(this, 'payment', '5')">5$ فقط</div>
+          <div class="payment-option" onclick="selectOption(this, 'payment', '0')">الدراسة مجانًا</div>
+        </div>
+        <input type="hidden" id="payment">
       </div>
     </div>
     <button onclick="nextNote()">التالي</button>
-  </div>
-
-  <div class="section" id="step3">
+  </div>  <div class="section" id="step3">
     <h2>🔐 الرقم الأكاديمي</h2>
-    <p>📩 تم إرسال الرقم الأكاديمي الخاص بك عبر واتساب</p>
+    <p>📩 تم إرسال الرقم الأكاديمي على واتساب.</p>
     <label>يرجى إدخال الرقم الأكاديمي الخاص بك:</label>
-    <div class="code-inputs">
-      <input maxlength="1" oninput="moveNext(this, 0)" />
-      <input maxlength="1" oninput="moveNext(this, 1)" />
-      <input maxlength="1" oninput="moveNext(this, 2)" />
-      <input maxlength="1" oninput="moveNext(this, 3)" />
-      <input maxlength="1" oninput="moveNext(this, 4)" />
-      <input maxlength="1" oninput="moveNext(this, 5)" />
+    <div class="code-input">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
     </div>
     <button onclick="verifyCode()">✅ تحقق</button>
-  </div>
-
-  <div class="section" id="success">
+  </div>  <div class="section" id="success">
     <h2>✅ تم التسجيل بنجاح!</h2>
-    <p>شكرًا لك، تم إرسال رسالة عبر واتساب.</p>
+    <p>📤 تم إرسال رسالة تأكيد على واتساب.</p>
   </div>
 </div>
-
 <script>
   let currentCode = "";
-  let noteIndex = 0;
+  let noteIndex = 0;function goToNotes() { if (validateStep1()) { document.getElementById("step1").classList.remove("active"); document.getElementById("step2").classList.add("active"); showNote(0); } }
 
-  function goToNotes() {
-    if (validateStep1()) {
-      document.getElementById("step1").classList.remove("active");
-      document.getElementById("step2").classList.add("active");
-      showNote(0);
-    }
-  }
+function showNote(index) { document.querySelectorAll(".note").forEach((n, i) => n.classList.toggle("active", i === index)); }
 
-  function showNote(index) {
-    document.querySelectorAll(".note").forEach((n, i) => {
-      n.classList.toggle("active", i === index);
-    });
-  }
+function nextNote() { const notes = document.querySelectorAll(".note"); if (noteIndex < notes.length - 1) { notes[noteIndex].classList.remove("active"); noteIndex++; notes[noteIndex].classList.add("active"); } else { handlePaymentChoice(); } }
 
-  function nextNote() {
-    const notes = document.querySelectorAll(".note");
-    if (noteIndex < notes.length - 1) {
-      notes[noteIndex].classList.remove("active");
-      noteIndex++;
-      notes[noteIndex].classList.add("active");
-    } else {
-      handlePaymentChoice();
-    }
-  }
+function selectOption(el, inputId, value) { document.querySelectorAll(.${inputId}-option).forEach(e => e.classList.remove("selected")); el.classList.add("selected"); document.getElementById(inputId).value = value; }
 
-  function handlePaymentChoice() {
-    const value = document.getElementById("paymentValue").value;
-    if (!value) return alert("يرجى اختيار طريقة الدفع.");
-    document.getElementById("step2").classList.remove("active");
-    if (value === "0") {
-      document.getElementById("success").classList.add("active");
-      sendWhatsappConfirmation();
-    } else {
-      document.getElementById("step3").classList.add("active");
-      sendVerificationCode();
-    }
-  }
+function handlePaymentChoice() { const value = document.getElementById("payment").value; if (!value) return alert("يرجى اختيار طريقة الدفع."); document.getElementById("step2").classList.remove("active"); if (value === "0") { document.getElementById("success").classList.add("active"); sendWhatsappConfirmation(); } else { document.getElementById("step3").classList.add("active"); sendVerificationCode(); } }
 
-  function selectGender(el, value) {
-    document.querySelectorAll(".gender-option").forEach(opt => opt.classList.remove("selected"));
-    el.classList.add("selected");
-    document.getElementById("genderInput").value = value;
-  }
+function validateStep1() { return ["fullName", "gender", "country", "birthDate", "countryCode", "phone"].every(id => { const val = document.getElementById(id).value.trim(); if (!val) { alert("يرجى ملء جميع الحقول بشكل صحيح."); return false; } return true; }); }
 
-  function selectPayment(el, value) {
-    document.querySelectorAll(".payment-option").forEach(opt => opt.classList.remove("selected"));
-    el.classList.add("selected");
-    document.getElementById("paymentValue").value = value;
-  }
+function verifyCode() { const inputs = document.querySelectorAll(".code-input input"); const enteredCode = Array.from(inputs).map(i => i.value).join(""); if (enteredCode === currentCode) { document.getElementById("step3").classList.remove("active"); document.getElementById("success").classList.add("active"); sendWhatsappConfirmation(); } else { alert("❌ الرقم الأكاديمي غير صحيح."); } }
 
-  function validateStep1() {
-    const fullName = document.getElementById("fullName").value.trim();
-    const gender = document.getElementById("genderInput").value.trim();
-    const country = document.getElementById("country").value.trim();
-    const age = document.getElementById("age").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const code = document.getElementById("countryCode").value;
-    if (!fullName || !gender || !country || !age || !phone || !code) {
-      alert("يرجى ملء جميع الحقول.");
-      return false;
-    }
-    return true;
-  }
+async function sendVerificationCode() { const phone = document.getElementById("countryCode").value + document.getElementById("phone").value; const last6 = phone.slice(-6); currentCode = last6.split('').map(n => (parseInt(n) - 1 + 10) % 10).join(''); const msg = 🔐 الرقم الأكاديمي الخاص بك هو: ${currentCode}; await sendWhatsApp(phone, msg); alert("📩 تم إرسال الرقم الأكاديمي إلى واتساب."); }
 
-  function moveNext(input, index) {
-    const inputs = document.querySelectorAll(".code-inputs input");
-    if (input.value.length === 1 && index < inputs.length - 1) {
-      inputs[index + 1].focus();
-    }
-  }
+async function sendWhatsappConfirmation() { const phone = document.getElementById("countryCode").value + document.getElementById("phone").value; const name = document.getElementById("fullName").value; const msg = ✅ مرحبًا ${name}،\nتم تسجيلك بنجاح في دورة زاد الرحيل.\n📚 بالتوفيق!; await sendWhatsApp(phone, msg); }
 
-  function verifyCode() {
-    const inputs = document.querySelectorAll(".code-inputs input");
-    const entered = Array.from(inputs).map(i => i.value).join('');
-    if (entered === currentCode) {
-      document.getElementById("step3").classList.remove("active");
-      document.getElementById("success").classList.add("active");
-      sendWhatsappConfirmation();
-    } else {
-      alert("❌ الرقم الأكاديمي غير صحيح.");
-    }
-  }
+async function sendWhatsApp(phone, message) { const inst = "instance129389"; const tok = "9grguvsi1pp4buyr"; await fetch(https://api.ultramsg.com/${inst}/messages/chat?token=${tok}, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ to: phone, body: message }) }); } </script>
 
-  function sendVerificationCode() {
-    const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
-    const last6 = phone.slice(-6);
-    currentCode = last6.split('').map(n => (parseInt(n) - 1 + 10) % 10).join('');
-    alert("📩 تم إرسال الرقم الأكاديمي إلى واتساب.");
-  }
-
-  function sendWhatsappConfirmation() {
-    alert("✅ تم إرسال رسالة واتساب للمستخدم.");
-  }
-</script>
 </body>
 </html>
