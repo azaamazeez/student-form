@@ -1,105 +1,198 @@
-## 📋 استمارة التسجيل  
-     الاسم الثلاثي:      
-     `<label>الجنس:</label> 
-     <div class="gender-options">   
-       <div class="gender-option" onclick="selectGender(this, 'ذكر')">ذكر</div>   
-       <div class="gender-option" onclick="selectGender(this, 'أنثى')">أنثى</div> 
-     </div> 
-     <input type="hidden" id="genderInput" required>  
-     <label>دولة الإقامة:</label> 
-     <input type="text" id="country" required>  
-     <label>العمر:</label> 
-     <input type="number" id="birthDate" placeholder="مثال: 25" min="5" max="100" required>  
-     <label>رقم الجوال:</label> 
-     <div class="phone-group">   
-       <select id="countryCode" required>     
-         <option value="">+ رمز الدولة</option>     
-         <option value="+966">🇸🇦 +966</option>     
-         <option value="+20">🇪🇬 +20</option>     
-         <option value="+963">🇸🇾 +963</option>     
-         <option value="+964">🇮🇶 +964</option>     
-         <option value="+971">🇦🇪 +971</option>     
-         <option value="+962">🇯🇴 +962</option>     
-         <option value="+965">🇰🇼 +965</option>     
-         <option value="+973">🇧🇭 +973</option>     
-         <option value="+968">🇴🇲 +968</option>     
-         <option value="+212">🇲🇦 +212</option>     
-         <!-- أضف المزيد لاحقًا -->   
-       </select>   
-       <input type="tel" id="phone" placeholder="رقم الهاتف" required /> 
-     </div> 
-     <button onclick="goToNotes()">التالي</button> `     
-     
-## 📌 تنبيهات هامة حول الدورة  
-       
-**أولاً: رسوم الدورة**ليست مقابل الدروس بل مقابل التمارين، المذاكرات، الدعم، الشهادة. وتُعد صدقة لدعم المشروع.  
-       
-**ثانيًا: حيادية المشايخ**المشايخ لا علاقة لهم بأي رسوم ولا يتقاضون شيئًا.  
-       
-**ثالثًا: الشهادة والجائزة**الشهادة برسوم 5$. قرعة بـ 200$ كل 6 أشهر للفائزين.  
-       
-**رابعًا: دعم المشروع**لضمان استمراريته من حيث الإشراف والتقني.  
-       
-**💰 كم ترغب في دفعه؟**  
-       
-10$ + تبرع  
-       
-10$ فقط  
-       
-5$ فقط  
-       
-مجانًا  
-       
-التالي     
-     
-## 🔐 الرقم الأكاديمي الخاص بك  
-       
-📩 تم إرسال الرقم الأكاديمي عبر واتساب  
-يرجى إدخال الرقم الأكاديمي:
+<!DOCTYPE html><html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📋 استمارة التسجيل</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      background: #f5f5f5;
+      padding: 10px;
+      margin: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #00695c;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .gender-options {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+    }
+    .gender-option, .payment-option {
+      padding: 10px;
+      flex: 1;
+      text-align: center;
+      background-color: #eee;
+      margin: 2px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .gender-option.selected, .payment-option.selected {
+      background-color: #4caf50;
+      color: white;
+    }
+    .phone-group {
+      display: flex;
+      gap: 5px;
+    }
+    .phone-group select {
+      flex: 1;
+    }
+    .phone-group input {
+      flex: 2;
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    button {
+      background-color: #00796b;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    .note {
+      display: none;
+    }
+    .note.active {
+      display: block;
+    }
+    .code-inputs {
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+    }
+    .code-inputs input {
+      width: 40px;
+      text-align: center;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="section active" id="step1">
+    <h2>📋 استمارة التسجيل</h2>
+    <label>الاسم الثلاثي:</label>
+    <input type="text" name="fullName" id="fullName" required>
+    <label>الجنس:</label>
+    <div class="gender-options">
+      <div class="gender-option" onclick="selectGender(this, 'ذكر')">ذكر</div>
+      <div class="gender-option" onclick="selectGender(this, 'أنثى')">أنثى</div>
+    </div>
+    <input type="hidden" name="gender" id="genderInput" required>
+    <label>دولة الإقامة:</label>
+    <input type="text" name="country" id="country" required>
+    <label>العمر:</label>
+    <input type="number" name="age" id="age" placeholder="مثال: 24" required>
+    <label>رقم الجوال:</label>
+    <div class="phone-group">
+      <select name="countryCode" id="countryCode" required>
+        <option value="">+ رمز الدولة</option>
+        <option value="+966">🇸🇦 +966</option>
+        <option value="+20">🇪🇬 +20</option>
+        <option value="+963">🇸🇾 +963</option>
+        <option value="+964">🇮🇶 +964</option>
+        <option value="+971">🇦🇪 +971</option>
+        <option value="+962">🇯🇴 +962</option>
+        <option value="+965">🇰🇼 +965</option>
+        <option value="+973">🇧🇭 +973</option>
+        <option value="+968">🇴🇲 +968</option>
+        <option value="+212">🇲🇦 +212</option>
+      </select>
+      <input type="tel" name="phone" id="phone" placeholder="رقم الهاتف" required />
+    </div>
+    <button type="button" onclick="goToNotes()">التالي</button>
+  </div>  <div class="section" id="step3">
+    <h2>🔐 الرقم الأكاديمي</h2>
+    <p>📩 تم إرسال الرقم الأكاديمي الخاص بك على رقمك في واتساب</p>
+    <label>يرجى إدخال الرقم الأكاديمي الخاص بك:</label>
+    <div class="code-inputs">
+      <input type="text" maxlength="1" oninput="moveToNext(this, 0)">
+      <input type="text" maxlength="1" oninput="moveToNext(this, 1)">
+      <input type="text" maxlength="1" oninput="moveToNext(this, 2)">
+      <input type="text" maxlength="1" oninput="moveToNext(this, 3)">
+      <input type="text" maxlength="1" oninput="moveToNext(this, 4)">
+      <input type="text" maxlength="1" oninput="verifyCode()">
+    </div>
+  </div>  <div class="section" id="success">
+    <h2>✅ تم التسجيل بنجاح!</h2>
+    <p>شكرًا لك، تم إرسال رسالة عبر واتساب.</p>
+  </div>
+</div><script>
+  const codeInputs = document.querySelectorAll(".code-inputs input");
+  let currentCode = "";
 
-<div style="display:flex; gap:8px; margin:10px 0;">
-  <input type="text" maxlength="1" class="code-box" oninput="moveNext(this)" onkeydown="movePrev(event, this)" style="width:35px; height:40px; font-size:20px; text-align:center;" />
-  <input type="text" maxlength="1" class="code-box" oninput="moveNext(this)" onkeydown="movePrev(event, this)" style="width:35px; height:40px; font-size:20px; text-align:center;" />
-  <input type="text" maxlength="1" class="code-box" oninput="moveNext(this)" onkeydown="movePrev(event, this)" style="width:35px; height:40px; font-size:20px; text-align:center;" />
-  <input type="text" maxlength="1" class="code-box" oninput="moveNext(this)" onkeydown="movePrev(event, this)" style="width:35px; height:40px; font-size:20px; text-align:center;" />
-  <input type="text" maxlength="1" class="code-box" oninput="moveNext(this)" onkeydown="movePrev(event, this)" style="width:35px; height:40px; font-size:20px; text-align:center;" />
-  <input type="text" maxlength="1" class="code-box" oninput="moveNext(this)" onkeydown="movePrev(event, this)" style="width:35px; height:40px; font-size:20px; text-align:center;" />
-</div>
-
-<button onclick="verifyCode()">✅ تحقق</button>
-
-## ✅ تم التسجيل بنجاح!  
-       
-شكرًا لك، تم إرسال رسالة عبر واتساب.
-
-<script>
-  function moveNext(current) {
-    if(current.value.length === current.maxLength) {
-      let next = current.nextElementSibling;
-      if(next && next.tagName === 'INPUT') {
-        next.focus();
-      }
+  function moveToNext(el, index) {
+    const val = el.value;
+    if (/\d/.test(val) && val.length === 1 && index < 5) {
+      codeInputs[index + 1].focus();
     }
   }
-  function movePrev(event, current) {
-    if(event.key === "Backspace" && current.value.length === 0) {
-      let prev = current.previousElementSibling;
-      if(prev && prev.tagName === 'INPUT') {
-        prev.focus();
-      }
-    }
-  }
+
   function verifyCode() {
-    const boxes = document.querySelectorAll('.code-box');
-    let code = '';
-    for(let box of boxes) {
-      if(box.value.trim() === '') {
-        alert('يرجى ملء جميع خانات الرقم الأكاديمي');
-        box.focus();
-        return;
-      }
-      code += box.value.trim();
+    const inputCode = Array.from(codeInputs).map(input => input.value).join("");
+    if (inputCode.length === 6 && inputCode === currentCode) {
+      document.getElementById("step3").classList.remove("active");
+      document.getElementById("success").classList.add("active");
+      sendWhatsappConfirmation();
     }
-    alert('تم إدخال الرقم الأكاديمي: ' + code);
   }
-</script>
+
+  async function sendWhatsappConfirmation() {
+    const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
+    const name = document.getElementById("fullName").value;
+    const msg = `✅ مرحبًا ${name}،\nتم تسجيلك بنجاح في دورة زاد الرحيل.\n📚 بالتوفيق!`;
+    await sendWhatsApp(phone, msg);
+  }
+
+  async function sendVerificationCode() {
+    const phone = document.getElementById("countryCode").value + document.getElementById("phone").value;
+    const last6 = phone.slice(-6);
+    currentCode = last6.split('').map(n => (parseInt(n) - 1 + 10) % 10).join('');
+    const msg = `🔐 الرقم الأكاديمي الخاص بك هو: ${currentCode}`;
+    await sendWhatsApp(phone, msg);
+    alert("📩 تم إرسال الرقم الأكاديمي عبر واتساب.");
+  }
+
+  async function sendWhatsApp(phone, message) {
+    const inst = "instance129389";
+    const tok = "9grguvsi1pp4buyr";
+    await fetch(`https://api.ultramsg.com/${inst}/messages/chat?token=${tok}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: phone, body: message })
+    });
+  }
+</script></body>
+</html>
